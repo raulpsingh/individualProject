@@ -14,4 +14,4 @@ Asana
 
 https://app.asana.com/0/1201175322397291/list
 
-I also invited you to project via eek email.
+I also invited you to project via eek email
