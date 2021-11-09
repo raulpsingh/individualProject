@@ -11,8 +11,8 @@ class  _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();  
   TextEditingController _passwordController = TextEditingController();  
   
-  String _email;
-  String _password;
+  late String _email;
+  late String _password;
   bool showLogin = true;
 
   @override
@@ -55,7 +55,7 @@ class  _LoginPageState extends State<LoginPage> {
             )
           ),
         ),
-        );
+                );
 
 
       }
@@ -105,24 +105,38 @@ class  _LoginPageState extends State<LoginPage> {
           );
       }
 
-      void _loginUser(){
-        _email= _emailController
-      }
+      void _buttonAction(){
+        _email= _emailController.text;
+        _password = _passwordController.text;
+
+        _emailController.clear();
+        _passwordController.clear();
+      }   
 
 
 
     return Scaffold(
       backgroundColor: Theme.of(context).primaryColor,
-      body: Column(
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              colorFilter: ColorFilter.mode(Colors.white.withOpacity(0.6), BlendMode.dstATop),
+              image: AssetImage('assets/astronomy.jpg')
+          ),
+        ),
+        child: Column(
         children: <Widget>[
           _logo(),
-          _form('LOGIN',(){}),
+          _form('LOGIN',_buttonAction),
 
 
         ],
 
       )
-
+      ),
     );
   }
 }
