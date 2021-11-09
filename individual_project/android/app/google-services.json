@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "743862272295",
+    "project_id": "wakemeup-d7ca0",
+    "storage_bucket": "wakemeup-d7ca0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:743862272295:android:96a9445092de3eb9dc6902",
+        "android_client_info": {
+          "package_name": "com.test.individual_project"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "743862272295-eumhgj1e6kokrfldpr9j0qoinl1sn70o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDn_VLcU-3gTmZvc4LWXqrmXh6qD9Zgvo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "743862272295-eumhgj1e6kokrfldpr9j0qoinl1sn70o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

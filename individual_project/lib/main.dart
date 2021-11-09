@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:individual_project/Pages/Login.dart';
-import 'Pages/Home.dart';
-import 'Pages/Login.dart';
-import 'Pages/test.dart';
+import 'package:individual_project/pages/start.dart';
+
 void main() => runApp(WakeMeApp());
 
 class WakeMeApp extends StatelessWidget{
@@ -14,7 +12,7 @@ Widget build(BuildContext context){
     theme: ThemeData(
       primaryColor: Colors.grey,
     ),
-    home: LoginPage()
+    home: Start()
   );
 }
 }
