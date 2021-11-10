@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">743862272295-eumhgj1e6kokrfldpr9j0qoinl1sn70o.apps.googleusercontent.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">743862272295</string>
+    <string name="google_api_key" translatable="false">AIzaSyDn_VLcU-3gTmZvc4LWXqrmXh6qD9Zgvo8</string>
+    <string name="google_app_id" translatable="false">1:743862272295:android:96a9445092de3eb9dc6902</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDn_VLcU-3gTmZvc4LWXqrmXh6qD9Zgvo8</string>
+    <string name="google_storage_bucket" translatable="false">wakemeup-d7ca0.appspot.com</string>
+    <string name="project_id" translatable="false">wakemeup-d7ca0</string>
+</resources>

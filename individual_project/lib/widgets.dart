@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'functions/functions.dart';
+
+final Shader linearGradient = LinearGradient(
+  colors: <Color>[Colors.red, Colors.orange],
+).createShader(
+  Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
+);
+
 Widget input(
-    Icon icon, String hint, TextEditingController controller, bool obscure) {
+    RadiantGradientMask mask, String hint, TextEditingController controller, bool obscure) {
   return Container(
     padding: EdgeInsets.only(left: 20, right: 20),
     child: TextField(
@@ -22,7 +30,7 @@ Widget input(
             padding: EdgeInsets.only(left: 10, right: 10),
             child: IconTheme(
               data: IconThemeData(color: Colors.white),
-              child: icon,
+              child: mask,
             ),
           )),
     ),
@@ -30,6 +38,7 @@ Widget input(
 }
 
 Widget loginButton(
+
   String text,
   void func(),
 ) {
@@ -42,8 +51,8 @@ Widget loginButton(
       text,
       style: TextStyle(
           fontWeight: FontWeight.bold,
-          color: Colors.deepOrangeAccent,
           fontSize: 25,fontFamily: 'Nexa',
+          foreground: Paint()..shader=linearGradient
           ),
     ),
     onPressed: () {
@@ -61,7 +70,7 @@ Widget logo() {
             style: TextStyle(
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
-                color: Colors.deepOrangeAccent,
+                foreground: Paint()..shader=linearGradient,
                 fontFamily: 'Nexa')),
       ),
     ),

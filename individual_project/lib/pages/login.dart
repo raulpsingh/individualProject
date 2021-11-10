@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:individual_project/databases/database_service.dart';
 import 'package:individual_project/widgets.dart';
 import 'package:individual_project/functions/functions.dart';
+import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
@@ -12,7 +14,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
-
+  AuthService _authService = AuthService();
   late String _email;
   late String _password;
   bool showLogin = true;
@@ -26,12 +28,12 @@ class _LoginPageState extends State<LoginPage> {
         children: <Widget>[
           Padding(
               padding: EdgeInsets.only(bottom: 20, top: 80),
-              child: input(Icon(Icons.email, color: Colors.deepOrangeAccent),
+              child: input(RadiantGradientMask(child: Icon(Icons.email)),
                   "Email", _emailController, false)),
           Padding(
               padding: EdgeInsets.only(bottom: 20),
               child: input(
-                  Icon(Icons.password_rounded, color: Colors.deepOrangeAccent),
+                  RadiantGradientMask(child: Icon(Icons.password_rounded)),
                   "Password",
                   _passwordController,
                   true)),
@@ -50,12 +52,60 @@ class _LoginPageState extends State<LoginPage> {
       ));
     }
 
-    void _buttonAction() {
+    void _loginButton() async {
       _email = _emailController.text;
       _password = _passwordController.text;
+      
+      if(_email.isEmpty || _password.isEmpty) return;
+      
+      AppUser? user = await _authService.signInWithEmailAndPassword(_email.trim(), _password.trim());
+      if(user == null){
+        showToast('Sign in failed. Please check your email and password.',
+          textStyle: TextStyle(color: Colors.white),
+          backgroundColor: Colors.white12,
+          context: context,
+          animation: StyledToastAnimation.scale,
+          reverseAnimation: StyledToastAnimation.fade,
+          position: StyledToastPosition.center,
+          animDuration: Duration(seconds: 1),
+          duration: Duration(seconds: 4),
+          curve: Curves.elasticOut,
+          reverseCurve: Curves.linear,
+        );
+
+      }else {
 
       _emailController.clear();
       _passwordController.clear();
+    }
+  }
+
+    void _registerButton() async {
+      _email = _emailController.text;
+      _password = _passwordController.text;
+
+      if(_email.isEmpty || _password.isEmpty) return;
+
+      AppUser? user = await _authService.registerWithEmailAndPassword(_email.trim(), _password.trim());
+      if(user == null){
+        showToast('Registration failed. Please check your email and password.',
+          textStyle: TextStyle(color: Colors.white),
+          backgroundColor: Colors.white12,
+          context: context,
+          animation: StyledToastAnimation.scale,
+          reverseAnimation: StyledToastAnimation.fade,
+          position: StyledToastPosition.center,
+          animDuration: Duration(seconds: 1),
+          duration: Duration(seconds: 4),
+          curve: Curves.elasticOut,
+          reverseCurve: Curves.linear,
+        );
+
+      }else {
+
+        _emailController.clear();
+        _passwordController.clear();
+      }
     }
 
     return Scaffold(
@@ -78,11 +128,11 @@ class _LoginPageState extends State<LoginPage> {
                 logo(),
                 (showLogin?
                 Column(
-                  children: <Widget> [_form('Login', _buttonAction),
+                  children: <Widget> [_form('Login', _loginButton),
                   Padding(
                     padding: EdgeInsets.only(top: 15),
                     child: GestureDetector(
-                      child: Text("Register",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, color: Colors.deepOrangeAccent),),
+                      child: Text("Register",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, foreground: Paint()..shader=linearGradient),),
                       onTap: (){
                         setState(() {
                           showLogin = false;
@@ -96,11 +146,11 @@ class _LoginPageState extends State<LoginPage> {
                   ],
                 )
                 : Column(
-                  children: <Widget> [_form('Register', _buttonAction),
+                  children: <Widget> [_form('Register', _registerButton),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: GestureDetector(
-                        child: Text("Already registered? Login",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, color: Colors.deepOrangeAccent),),
+                        child: Text("Already registered? Login",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, foreground: Paint()..shader=linearGradient),),
                         onTap: (){
                           setState(() {
                             showLogin = true;
