@@ -1,7 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
+String dateFormat(DateTime time){
+  String _time = DateFormat.jm().format(time);
+  return _time;
+}
 
 class AppUser{
 

@@ -78,13 +78,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
-  expansion_card:
+  day_night_time_picker:
     dependency: "direct main"
     description:
-      name: expansion_card
+      name: day_night_time_picker
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.0"
+    version: "1.0.3+1"
   fake_async:
     dependency: transitive
     description:
@@ -176,7 +176,7 @@ packages:
     source: hosted
     version: "4.0.0"
   intl:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: intl
       url: "https://pub.dartlang.org"

@@ -21,8 +21,9 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  day_night_time_picker:
+  intl:
   android_alarm_manager:
-  expansion_card: ^0.1.0
   flutter_snake_navigationbar:
   flutter_styled_toast:
   provider:
