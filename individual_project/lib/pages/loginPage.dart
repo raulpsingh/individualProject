@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/widgets.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -21,7 +22,6 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-
     Widget _form(String label, void func()) {
       return Container(
           child: Column(
@@ -55,12 +55,14 @@ class _LoginPageState extends State<LoginPage> {
     void _loginButton() async {
       _email = _emailController.text;
       _password = _passwordController.text;
-      
-      if(_email.isEmpty || _password.isEmpty) return;
-      
-      AppUser? user = await _authService.signInWithEmailAndPassword(_email.trim(), _password.trim());
-      if(user == null){
-        showToast('Sign in failed. Please check your email and password.',
+
+      if (_email.isEmpty || _password.isEmpty) return;
+
+      AppUser? user = await _authService.signInWithEmailAndPassword(
+          _email.trim(), _password.trim());
+      if (user == null) {
+        showToast(
+          'Sign in failed. Please check your email and password.',
           textStyle: TextStyle(color: Colors.white),
           backgroundColor: Colors.white12,
           context: context,
@@ -72,23 +74,23 @@ class _LoginPageState extends State<LoginPage> {
           curve: Curves.elasticOut,
           reverseCurve: Curves.linear,
         );
-
-      }else {
-
-      _emailController.clear();
-      _passwordController.clear();
+      } else {
+        _emailController.clear();
+        _passwordController.clear();
+      }
     }
-  }
 
     void _registerButton() async {
       _email = _emailController.text;
       _password = _passwordController.text;
 
-      if(_email.isEmpty || _password.isEmpty) return;
+      if (_email.isEmpty || _password.isEmpty) return;
 
-      AppUser? user = await _authService.registerWithEmailAndPassword(_email.trim(), _password.trim());
-      if(user == null){
-        showToast('Registration failed. Please check your email and password.',
+      AppUser? user = await _authService.registerWithEmailAndPassword(
+          _email.trim(), _password.trim());
+      if (user == null) {
+        showToast(
+          'Registration failed. Please check your email and password.',
           textStyle: TextStyle(color: Colors.white),
           backgroundColor: Colors.white12,
           context: context,
@@ -100,9 +102,7 @@ class _LoginPageState extends State<LoginPage> {
           curve: Curves.elasticOut,
           reverseCurve: Curves.linear,
         );
-
-      }else {
-
+      } else {
         _emailController.clear();
         _passwordController.clear();
       }
@@ -126,44 +126,55 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               children: <Widget>[
                 logo(),
-                (showLogin?
-                Column(
-                  children: <Widget> [_form('Login', _loginButton),
-                  Padding(
-                    padding: EdgeInsets.only(top: 15),
-                    child: GestureDetector(
-                      child: Text("Register",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, foreground: Paint()..shader=linearGradient),),
-                      onTap: (){
-                        setState(() {
-                          showLogin = false;
-                        });
-
-                      },
-
-                    ),
-                  )
-
-                  ],
-                )
-                : Column(
-                  children: <Widget> [_form('Register', _registerButton),
-                    Padding(
-                      padding: EdgeInsets.only(top: 15),
-                      child: GestureDetector(
-                        child: Text("Already registered? Login",style: TextStyle(fontSize: 20,fontFamily: 'Nexa',fontWeight: FontWeight.bold, foreground: Paint()..shader=linearGradient),),
-                        onTap: (){
-                          setState(() {
-                            showLogin = true;
-                          });
-
-                        },
-
-                      ),
-                    )
-
-                  ],
-                )
-                ),
+                (showLogin
+                    ? Column(
+                        children: <Widget>[
+                          _form('Login', _loginButton),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: GestureDetector(
+                              child: Text(
+                                "Register",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Nexa',
+                                    fontWeight: FontWeight.bold,
+                                    foreground: Paint()
+                                      ..shader = linearGradient),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  showLogin = false;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      )
+                    : Column(
+                        children: <Widget>[
+                          _form('Register', _registerButton),
+                          Padding(
+                            padding: EdgeInsets.only(top: 15),
+                            child: GestureDetector(
+                              child: Text(
+                                "Already registered? Login",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontFamily: 'Nexa',
+                                    fontWeight: FontWeight.bold,
+                                    foreground: Paint()
+                                      ..shader = linearGradient),
+                              ),
+                              onTap: () {
+                                setState(() {
+                                  showLogin = true;
+                                });
+                              },
+                            ),
+                          )
+                        ],
+                      )),
               ],
             ),
           )),

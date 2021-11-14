@@ -25,7 +25,7 @@ class _MainPageState extends State<MainPage> {
     Gradient unselectedGradient =
         const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
     Gradient backGround =
-    const LinearGradient(colors: [Colors.white54, Colors.white54]);
+        const LinearGradient(colors: [Colors.white54, Colors.white54]);
 
     return MaterialApp(
       home: Scaffold(

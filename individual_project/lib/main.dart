@@ -6,28 +6,27 @@ import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/pages/start.dart';
 import 'package:provider/provider.dart';
 
-void main() async{
+import 'objects/user.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(WakeMeApp());
   await AndroidAlarmManager.initialize();
 }
-class WakeMeApp extends StatelessWidget{
 
-@override 
-Widget build(BuildContext context){
-  return StreamProvider<AppUser?>.value(
-    value: AuthService().currentUser,
-    initialData: null,
-    child: MaterialApp(
-      title: 'WakeMeUp',
-      theme: ThemeData(
-        primaryColor: Colors.grey,
-      ),
-      home: Start()
-    ),
-  );
+class WakeMeApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamProvider<AppUser?>.value(
+      value: AuthService().currentUser,
+      initialData: null,
+      child: MaterialApp(
+          title: 'WakeMeUp',
+          theme: ThemeData(
+            primaryColor: Colors.grey,
+          ),
+          home: Start()),
+    );
+  }
 }
-}
-
-  

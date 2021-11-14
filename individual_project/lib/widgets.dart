@@ -8,8 +8,8 @@ final Shader linearGradient = LinearGradient(
   Rect.fromLTWH(0.0, 0.0, 200.0, 70.0),
 );
 
-Widget input(
-    RadiantGradientMask mask, String hint, TextEditingController controller, bool obscure) {
+Widget input(RadiantGradientMask mask, String hint,
+    TextEditingController controller, bool obscure) {
   return Container(
     padding: EdgeInsets.only(left: 20, right: 20),
     child: TextField(
@@ -18,7 +18,10 @@ Widget input(
       style: TextStyle(fontSize: 20, color: Colors.white),
       decoration: InputDecoration(
           hintStyle: TextStyle(
-              fontWeight: FontWeight.bold, fontSize: 20, color: Colors.white30,fontFamily: 'Nexa'),
+              fontWeight: FontWeight.bold,
+              fontSize: 20,
+              color: Colors.white30,
+              fontFamily: 'Nexa'),
           hintText: hint,
           focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(20),
@@ -38,7 +41,6 @@ Widget input(
 }
 
 Widget loginButton(
-
   String text,
   void func(),
 ) {
@@ -51,9 +53,9 @@ Widget loginButton(
       text,
       style: TextStyle(
           fontWeight: FontWeight.bold,
-          fontSize: 25,fontFamily: 'Nexa',
-          foreground: Paint()..shader=linearGradient
-          ),
+          fontSize: 25,
+          fontFamily: 'Nexa',
+          foreground: Paint()..shader = linearGradient),
     ),
     onPressed: () {
       func();
@@ -70,12 +72,13 @@ Widget logo() {
             style: TextStyle(
                 fontSize: 45,
                 fontWeight: FontWeight.bold,
-                foreground: Paint()..shader=linearGradient,
+                foreground: Paint()..shader = linearGradient,
                 fontFamily: 'Nexa')),
       ),
     ),
   );
 }
+
 class DropDown extends StatefulWidget {
   const DropDown({Key? key}) : super(key: key);
 
@@ -91,7 +94,10 @@ class _DropDownState extends State<DropDown> {
   Widget build(BuildContext context) {
     return DropdownButton<String>(
       value: dropdownValue,
-      icon: const Icon(Icons.arrow_downward,color: Colors.deepOrangeAccent,),
+      icon: const Icon(
+        Icons.arrow_downward,
+        color: Colors.deepOrangeAccent,
+      ),
       iconSize: 24,
       elevation: 16,
       style: const TextStyle(color: Colors.deepOrangeAccent),

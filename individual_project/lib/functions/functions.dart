@@ -1,23 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/databases/database_service.dart';
 import 'package:intl/intl.dart';
 
-String dateFormat(DateTime time){
-  String _time = DateFormat.jm().format(time);
+import '../objects/alarmObject.dart';
+
+String dateFormat(Timestamp time){
+  DateTime date = time.toDate();
+  String _time = DateFormat.jm().format(date);
   return _time;
 }
 
-class AppUser{
-
-  late String id ;
-
-  AppUser.fromFirebase(User user){
-    id = user.uid;
-
-  }
-
-}
 
 class RadiantGradientMask extends StatelessWidget {
   RadiantGradientMask({required this.child});
@@ -35,4 +30,9 @@ class RadiantGradientMask extends StatelessWidget {
       child: child,
     );
   }
+}
+
+void saveAlarm(Alarm a) async{
+  await DataBaseService().addAndEditAlarms(a);
+
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/functions/AlarmRing.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -21,8 +22,9 @@ class SettingsPage extends StatelessWidget {
           ),
           child: Column(
             children: [
-              Padding(padding: EdgeInsets.all(100),
-                child:Row(
+              Padding(
+                padding: EdgeInsets.all(100),
+                child: Row(
                   children: [
                     RaisedButton(
                       child: Text("Sign out"),
@@ -30,10 +32,15 @@ class SettingsPage extends StatelessWidget {
                       onPressed: () {
                         AuthService().logOut();
                       },
-
                     ),
-                  ],
-                ) ,
+                    RaisedButton(
+                      child: Text("Sign out"),
+                      color: Colors.deepOrangeAccent,
+                      onPressed: () {
+                      },
+                    ),],
+                ),
+
               ),
             ],
           ),

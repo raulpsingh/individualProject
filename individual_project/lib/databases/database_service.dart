@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/functions/functions.dart';
+import 'package:individual_project/objects/user.dart';
 
 
 class AuthService {
@@ -45,7 +47,34 @@ class AuthService {
   }
 }
 
-void insert(String firstNumber, String func,String secondNumber,String result, String time,{String equals= '='} ){
-  List a= [firstNumber,func,secondNumber,equals,result ,time];
-  FirebaseFirestore.instance.collection('histories').add({'history': a});
+void insert( String label, DateTime time, {bool status=true} ){
+  List a=[label, time, status];
+  FirebaseFirestore.instance.collection('Alarms').add({'Alarm': a});
+}
+
+class DataBaseService{
+  final CollectionReference _alarmsCollection = FirebaseFirestore.instance.collection('alarms');
+
+  Future addAndEditAlarms(Alarm alarm) async{
+    return await _alarmsCollection.doc(alarm.uid).set(alarm.toMap());
+
+  }
+  Future editAlarms(Alarm alarm, String uid) async{
+    return await _alarmsCollection.doc(alarm.uid).set(alarm.toMap());
+
+  }
+  Future removeAlarm(Alarm alarm) async{
+    return await _alarmsCollection.doc(alarm.uid).delete();
+  }
+
+  Stream<List<Alarm>> getAlarms(String? author){
+    Query query;
+      query = _alarmsCollection.where('author', isEqualTo: author);
+    return query.snapshots().map((QuerySnapshot data) =>
+    data.docs.map((DocumentSnapshot doc) => Alarm.fromJson(doc.id,doc.data() as Map<String, dynamic>)).toList());
+
+  }
+
+
+
 }

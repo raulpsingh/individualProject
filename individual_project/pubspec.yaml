@@ -21,7 +21,7 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  day_night_time_picker:
+  flutter_sound:
   intl:
   android_alarm_manager:
   flutter_snake_navigationbar:
@@ -55,9 +55,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-     - assets/astronomy.jpg
      - assets/mountains.png
-     - assets/ocean.jpg
      - assets/mountain.png
 
   # An image asset can refer to one or more resolution-specific "variants", see

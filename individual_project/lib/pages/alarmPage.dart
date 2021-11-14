@@ -1,12 +1,17 @@
+import 'dart:async';
+import 'dart:math';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/databases/database_service.dart';
 import 'package:individual_project/functions/functions.dart';
-import 'package:individual_project/main.dart';
-import 'package:android_alarm_manager/android_alarm_manager.dart';
-import 'package:individual_project/functions/alarmObject.dart';
-
+import 'package:individual_project/objects/alarmObject.dart';
+import 'package:individual_project/objects/user.dart';
+import 'package:provider/provider.dart';
 import '../widgets.dart';
-import 'alarmEditPage.dart';
+import 'alarmAddPage.dart';
+import 'package:individual_project/pages/AlarmEditPage.dart';
+
 
 class AlarmPage extends StatelessWidget {
   const AlarmPage({Key? key}) : super(key: key);
@@ -15,39 +20,55 @@ class AlarmPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return AlarmsList();
 
-    /* floatingActionButton: Container(
-        padding: EdgeInsets.only(bottom: 80),
-      child: FloatingActionButton(
-          backgroundColor: Colors.deepOrangeAccent,
-          onPressed: (){
-            AndroidAlarmManager.oneShot(Duration(seconds: 5),1,fireAlarm);
-          },
-        ),
-    ),*/
   }
 }
-
 void fireAlarm() {
   print('Alarm fired at ${DateTime.now()}');
 }
 
 class AlarmsList extends StatefulWidget {
-
   @override
   _AlarmsListState createState() => _AlarmsListState();
 }
 
-
 class _AlarmsListState extends State<AlarmsList> {
-  final alarms = <Alarm>[
-    Alarm(label: "Alarm1", time: DateTime.now(), status: true),
-    Alarm(label: "Alarm2", time: DateTime.now(), status: true),
-    Alarm(label: "Alarm3", time: DateTime.now(), status: true),
-    Alarm(label: "Alarm4", time: DateTime.now(), status: true),
-    Alarm(label: "Alarm5", time: DateTime.now(), status: true),
-  ];
+  List alarms = <Alarm>[];
+  DataBaseService db =DataBaseService();
+  late StreamSubscription<List<Alarm>> alarmStreamSubscription;
+  @override
+  void dispose(){
+    if(alarmStreamSubscription != null){
+      print('unsubscribing');
+      alarmStreamSubscription.cancel();
+    }
+    super.dispose();
+  }
+
+
+  Future <void> loadData(AppUser user) async {
+    var stream = db.getAlarms(user.id);
+    alarmStreamSubscription = stream.listen((List<Alarm> data) {
+        alarms=data;
+
+    });
+  }
+
+  /*Timestamp  nextAlarm(){
+    List timeStamps=<Timestamp>[];
+    Timestamp _now = Timestamp.fromDate(DateTime.now());
+    for(var i=0;i<alarms.length;i++){
+       timeStamps.add(alarms[i].time);
+    }
+    for(var i=0;i<timeStamps.length;i++) {
+      var a=_now - timeStamps[i];
+    }
+
+  }*/
+
   @override
   Widget build(BuildContext context) {
+    AppUser user= Provider.of<AppUser>(context);
+    loadData(user);
     return Scaffold(
       body: Scaffold(
           backgroundColor: Colors.grey,
@@ -97,81 +118,109 @@ class _AlarmsListState extends State<AlarmsList> {
                     child: MediaQuery.removePadding(
                       context: context,
                       removeTop: true,
-                      child: ListView.builder(
-                          itemCount: alarms.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 5, right: 5),
-                              child: Card(
-                                  color: Colors.white60,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  elevation: 10,
-                                  child: Container(
-                                    height: 100,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding: EdgeInsets.only(
-                                                  left: 20, top: 20),
-                                              height: 50,
-                                              width: 250,
-                                              child: Text(
-                                                dateFormat(alarms[index].time)
-                                                    .toString(),
-                                                style: TextStyle(
-                                                    fontFamily: "Nexa",
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 30,
-                                                    foreground: Paint()
-                                                      ..shader =
-                                                          linearGradient),
-                                              ),
-                                            ),
-                                            Container(
-                                              padding: EdgeInsets.only(top: 28),
-                                              width: 122,
-                                              transformAlignment:
-                                                  Alignment.centerRight,
-                                              child: CupertinoSwitch(
-                                                value: alarms[index].status,
-                                                onChanged: (value) {
-                                                  setState(() {
+                      child: StreamBuilder(
+                        stream: FirebaseFirestore.instance.collection('Alarms').snapshots(),
+                        builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot){
+                          if(!snapshot.hasData) return Text("No records");
+                       return ListView.builder(
+                            itemCount: alarms.length,
+                            itemBuilder: (context, index) {
+                              return Dismissible(
+                                    key: UniqueKey(),
+                                onDismissed: (direction){
+                                   db.removeAlarm(alarms[index]);
+                                   setState(() {
+                                     alarms.removeAt(index);
+                                   });
 
-                                                  alarms[index].status=value;
-                                                  },);
-                                                },
-                                                activeColor: Colors.green,
-                                              ),
-                                            )
-                                          ],
+                                },
+                              child: Padding(
+                                  padding: const EdgeInsets.only(left: 5, right: 5),
+                                  child: GestureDetector(
+                                    onTap: (){
+                                      open(alarms[index]);
+                                      Navigator.push(
+                                          context, MaterialPageRoute(builder: (ctx) => AlarmEdit()));
+                                    },
+                                    child: Card(
+                                        color: Colors.white60,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(20),
                                         ),
-                                        Row(
-                                          children: <Widget>[
-                                            Container(
-                                              padding:
-                                                  EdgeInsets.only(left: 20),
-                                              child: Text(
-                                                alarms[index].label,
-                                                style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontFamily: 'Nexa',
-                                                    fontWeight: FontWeight.bold,
-                                                    foreground: Paint()
-                                                      ..shader =
-                                                          linearGradient),
+                                        elevation: 10,
+                                        child: Container(
+                                          height: 100,
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    padding: EdgeInsets.only(
+                                                        left: 20, top: 20),
+                                                    height: 50,
+                                                    width: 250,
+                                                    child: Text(
+                                                      dateFormat(alarms[index].time
+                                                      ).toString(),
+                                                      style: TextStyle(
+                                                          fontFamily: "Nexa",
+                                                          fontWeight: FontWeight.bold,
+                                                          fontSize: 30,
+                                                          foreground: Paint()
+                                                            ..shader =
+                                                                linearGradient),
+                                                    ),
+                                                  ),
+                                                  Container(
+                                                    padding: EdgeInsets.only(top: 28),
+                                                    width: 122,
+                                                    transformAlignment:
+                                                        Alignment.centerRight,
+                                                    child: CupertinoSwitch(
+                                                      value: alarms[index].status,
+                                                      onChanged: (value) {
+                                                        setState(
+                                                          () {
+                                                            alarms[index].status =
+                                                                value;
+                                                            db.addAndEditAlarms(alarms[index]);
+                                                          },
+                                                        );
+                                                      },
+                                                      activeColor: Colors.green,
+                                                    ),
+                                                  )
+                                                ],
                                               ),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                  )),
+                                              Row(
+                                                children: <Widget>[
+                                                  Container(
+                                                    padding:
+                                                        EdgeInsets.only(left: 20),
+                                                    child: Text(
+                                                      alarms[index].label.toString(),
+                                                      style: TextStyle(
+                                                          fontSize: 15,
+                                                          fontFamily: 'Nexa',
+                                                          fontWeight: FontWeight.bold,
+                                                          foreground: Paint()
+                                                            ..shader =
+                                                                linearGradient),
+                                                    ),
+                                                  ),
+                                                ],
+                                              )
+                                            ],
+                                          ),
+                                        )),
+                                  ),
+                                ),
+                                          background: Container( decoration: BoxDecoration(color: Colors.red.withOpacity(0.5),borderRadius: BorderRadius.circular(20) ),)
+                              );
+                            }
                             );
-                          }),
+  },
+                      ),
                     ),
                   ),
                 ],
@@ -184,14 +233,12 @@ class _AlarmsListState extends State<AlarmsList> {
           child: Icon(Icons.add),
           backgroundColor: Colors.deepOrangeAccent,
           foregroundColor: Colors.white,
-    onPressed: (){
-      Navigator.push(context, MaterialPageRoute(builder: (ctx) => AlarmEdit()));
-
-    },
-    ),
+          onPressed: () {
+            Navigator.push(
+                context, MaterialPageRoute(builder: (ctx) => AlarmAdd()));
+          },
+        ),
       ),
-
-
     );
   }
 }
