@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/databases/database_service.dart';
 import 'package:intl/intl.dart';
@@ -12,7 +11,10 @@ String dateFormat(Timestamp time){
   String _time = DateFormat.jm().format(date);
   return _time;
 }
-
+DateTime formatTimeStamp(Timestamp time){
+  DateTime _date = time.toDate();
+  return _date;
+}
 
 class RadiantGradientMask extends StatelessWidget {
   RadiantGradientMask({required this.child});

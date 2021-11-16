@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/databases/database_service.dart';
 import 'package:individual_project/objects/alarmObject.dart';
-import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/pages/mainPage.dart';
 import 'package:individual_project/widgets.dart';

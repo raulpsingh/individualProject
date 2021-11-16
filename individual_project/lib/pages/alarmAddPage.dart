@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/functions/notification_service.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/user.dart';
@@ -8,7 +9,7 @@ import 'package:individual_project/pages/mainPage.dart';
 import 'package:individual_project/widgets.dart';
 import 'package:provider/provider.dart';
 
-DateTime time=DateTime.now() ;
+DateTime time = DateTime.now();
 
 class AlarmAdd extends StatefulWidget {
   const AlarmAdd({Key? key}) : super(key: key);
@@ -18,13 +19,12 @@ class AlarmAdd extends StatefulWidget {
 }
 
 class _AlarmAddState extends State<AlarmAdd> {
-
   TextEditingController num1controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    AppUser? user= Provider.of<AppUser?>(context);
-    DateTime _time=DateTime.now();
+    AppUser? user = Provider.of<AppUser?>(context);
+    DateTime _time = DateTime.now();
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -46,7 +46,9 @@ class _AlarmAddState extends State<AlarmAdd> {
                 Padding(
                   padding: const EdgeInsets.only(top: 80, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: 382,
                     height: 190,
                     padding: EdgeInsets.only(top: 80),
@@ -58,8 +60,8 @@ class _AlarmAddState extends State<AlarmAdd> {
                             initialDateTime: _time,
                             onDateTimeChanged: (datetime) {
                               setState(() {
-                              time = datetime ;
-                              print(datetime);
+                                time = datetime;
+                                print(datetime);
                               });
                             },
                             use24hFormat: true,
@@ -77,7 +79,9 @@ class _AlarmAddState extends State<AlarmAdd> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: 382,
                     height: 100,
                     child: Padding(
@@ -106,7 +110,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                                         borderSide: const BorderSide(
                                             color: Colors.deepOrangeAccent),
                                         borderRadius:
-                                        BorderRadius.circular(5))),
+                                            BorderRadius.circular(5))),
                                 keyboardType: TextInputType.text,
                                 controller: num1controller,
                               ),
@@ -124,7 +128,9 @@ class _AlarmAddState extends State<AlarmAdd> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: 382,
                     height: 100,
                     child: Padding(
@@ -149,13 +155,14 @@ class _AlarmAddState extends State<AlarmAdd> {
                 )
               ],
             ),
-
             Row(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: 382,
                     height: 100,
                     child: Padding(
@@ -180,7 +187,6 @@ class _AlarmAddState extends State<AlarmAdd> {
                 )
               ],
             ),
-
             Padding(
               padding: const EdgeInsets.only(top: 80),
               child: Row(
@@ -202,12 +208,15 @@ class _AlarmAddState extends State<AlarmAdd> {
                   TextButton(
                       onPressed: () {
                         Timestamp stamp = Timestamp.fromDate(time);
-                        Alarm a = Alarm(author: user!.id ,label: num1controller.text,time: stamp, status: true);
+                        Alarm a = Alarm(
+                            author: user!.id,
+                            label: num1controller.text,
+                            time: stamp,
+                            status: true);
                         saveAlarm(a);
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (ctx) => MainPage()));
-
-
+                        NotificationService.showNotification(a);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
                         "Done",

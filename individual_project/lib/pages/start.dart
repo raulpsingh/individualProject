@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/pages/alarmPage.dart';
+import 'package:individual_project/pages/alarmRingPage.dart';
 import 'package:individual_project/pages/loginPage.dart';
 import 'package:individual_project/pages/mainPage.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +14,6 @@ class Start extends StatelessWidget {
   Widget build(BuildContext context) {
     final AppUser? user = Provider.of<AppUser?>(context);
     final bool isLoggedIn = user != null;
-    return isLoggedIn ? MainPage() : LoginPage();
+    return isLoggedIn ? RingPage() : LoginPage();
   }
 }

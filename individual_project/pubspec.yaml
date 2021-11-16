@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
+  rxdart:
+  flutter_local_notifications:
   flutter_sound:
   intl:
   android_alarm_manager:
@@ -73,6 +75,9 @@ flutter:
     - family: Nexa
       fonts:
         - asset: fonts/Nexa-Bold.ttf
+    - family: NexaXBold
+      fonts:
+        - asset: fonts/Nexa-XBold.ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

@@ -15,7 +15,7 @@ class test extends StatelessWidget {
             fit: BoxFit.fitHeight,
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.2), BlendMode.dstATop),
-            image: AssetImage('assets/astronomy.jpg')),
+            image: AssetImage('assets/mountain.png')),
       ),
       child: SafeArea(
         top: false,
