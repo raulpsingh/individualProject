@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/widgets.dart';
 import 'package:individual_project/functions/functions.dart';
@@ -22,12 +22,15 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double paddHeight = MediaQuery.of(context).size.height;
+    final double paddWidth = MediaQuery.of(context).size.width;
     Widget _form(String label, void func()) {
       return Container(
           child: Column(
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.only(bottom: 20, top: 80),
+              padding: EdgeInsets.only(bottom: 20, top: paddHeight*0.07),
               child: input(RadiantGradientMask(child: Icon(Icons.email)),
                   "Email", _emailController, false)),
           Padding(

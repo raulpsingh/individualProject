@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:individual_project/functions/notification_service.dart';
+import 'package:individual_project/pages/missionsPage.dart';
+import 'package:individual_project/services/notification_service.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/user.dart';
@@ -23,6 +24,9 @@ class _AlarmAddState extends State<AlarmAdd> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double paddHeight = MediaQuery.of(context).size.height;
+    final double paddWidth = MediaQuery.of(context).size.width;
     AppUser? user = Provider.of<AppUser?>(context);
     DateTime _time = DateTime.now();
 
@@ -44,16 +48,17 @@ class _AlarmAddState extends State<AlarmAdd> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 80, right: 5, left: 5),
+                  padding:
+                      EdgeInsets.only(top: paddHeight * 0.1, right: 5, left: 5),
                   child: Container(
                     decoration: BoxDecoration(
                         color: Colors.white60,
                         borderRadius: BorderRadius.circular(20)),
-                    width: 382,
-                    height: 190,
-                    padding: EdgeInsets.only(top: 80),
+                    width: size.width * 0.97,
+                    height: size.height * 0.2,
+                    padding: EdgeInsets.only(),
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 50),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Center(
                         child: Container(
                           child: CupertinoDatePicker(
@@ -82,7 +87,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                     decoration: BoxDecoration(
                         color: Colors.white60,
                         borderRadius: BorderRadius.circular(20)),
-                    width: 382,
+                    width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -98,7 +103,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                           Padding(
                             padding: const EdgeInsets.only(left: 100),
                             child: SizedBox(
-                              width: 200,
+                              width: size.width * 0.45,
                               child: TextField(
                                 cursorColor: Colors.deepOrangeAccent,
                                 decoration: InputDecoration(
@@ -127,28 +132,34 @@ class _AlarmAddState extends State<AlarmAdd> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: Colors.white60,
-                        borderRadius: BorderRadius.circular(20)),
-                    width: 382,
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            "Mission",
-                            style: TextStyle(
-                                fontFamily: "Nexa",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 220),
-                            child: DropDown(),
-                          )
-                        ],
+                  child: GestureDetector(
+                    onTap: (){Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(builder: (context) => MissionsPage()),
+                    );},
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white60,
+                          borderRadius: BorderRadius.circular(20)),
+                      width: size.width * 0.97,
+                      height: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              "Mission",
+                              style: TextStyle(
+                                  fontFamily: "Nexa",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: paddWidth * 0.5),
+                              child: DropDown(),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -163,7 +174,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                     decoration: BoxDecoration(
                         color: Colors.white60,
                         borderRadius: BorderRadius.circular(20)),
-                    width: 382,
+                    width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -177,7 +188,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                                 fontSize: 20),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 220),
+                            padding: EdgeInsets.only(left: paddWidth * 0.5),
                             child: DropDown(),
                           )
                         ],
@@ -188,7 +199,7 @@ class _AlarmAddState extends State<AlarmAdd> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.only(top: 80),
+              padding: EdgeInsets.only(top: paddHeight * 0.05),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
@@ -209,6 +220,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                       onPressed: () {
                         Timestamp stamp = Timestamp.fromDate(time);
                         Alarm a = Alarm(
+                            id: randomId(),
                             author: user!.id,
                             label: num1controller.text,
                             time: stamp,

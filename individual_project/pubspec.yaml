@@ -21,8 +21,10 @@ environment:
   sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
-  rxdart:
+  uuid:
   flutter_local_notifications:
+  audioplayers:
+  rxdart:
   flutter_sound:
   intl:
   android_alarm_manager:
@@ -59,6 +61,7 @@ flutter:
   assets:
      - assets/mountains.png
      - assets/mountain.png
+     - assets/ALongCold.mp3
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

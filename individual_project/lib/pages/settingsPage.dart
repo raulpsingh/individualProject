@@ -1,13 +1,15 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/services/database_service.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double paddHeight = MediaQuery.of(context).size.height;
+    final double paddWidth = MediaQuery.of(context).size.width;
     return Container(
       child: Scaffold(
         backgroundColor: Colors.grey,
@@ -26,7 +28,7 @@ class SettingsPage extends StatelessWidget {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top:80),
+                  padding:  EdgeInsets.only(top: paddHeight * 0.1),
                   child: Container(
                     height: 150,
                     color: Colors.white24,
@@ -51,7 +53,7 @@ class SettingsPage extends StatelessWidget {
                   padding: EdgeInsets.only(),
                   child: Row(children: [
                     Container(
-                      width: 392,
+                      width: size.width*0.97,
                       height: 80,
                       color: Colors.white24,
                       child: TextButton(
@@ -92,7 +94,7 @@ class SettingsPage extends StatelessWidget {
                 ),
                 Row(children: [
                   Container(
-                    width: 392,
+                    width: size.width*0.97,
                     height: 80,
                     color: Colors.white24,
                     child: TextButton(
@@ -101,7 +103,7 @@ class SettingsPage extends StatelessWidget {
                               Colors.deepOrangeAccent.withOpacity(0.5))),
                       onPressed: () {},
                       child: Container(
-                        width: 390,
+                        width: size.width*0.97,
                         height: 80,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 5),
@@ -132,7 +134,7 @@ class SettingsPage extends StatelessWidget {
                 ]),
                 Row(children: [
                   Container(
-                    width: 392,
+                    width: size.width*0.97,
                     height: 80,
                     color: Colors.white24,
                     child: TextButton(
@@ -141,7 +143,7 @@ class SettingsPage extends StatelessWidget {
                               Colors.deepOrangeAccent.withOpacity(0.5))),
                       onPressed: () {},
                       child: Container(
-                        width: 390,
+                        width: size.width*0.97,
                         height: 80,
                         child: Padding(
                           padding: const EdgeInsets.only(top: 5),
@@ -172,7 +174,7 @@ class SettingsPage extends StatelessWidget {
                 ]),
                 Row(children: [
                   Container(
-                    width: 392,
+                    width: size.width*0.97,
                     height: 80,
                     color: Colors.white24,
                     child: TextButton(

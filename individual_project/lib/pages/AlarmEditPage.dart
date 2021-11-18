@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/pages/mainPage.dart';
@@ -39,6 +39,9 @@ class _AlarmEditState extends State<AlarmEdit> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double paddHeight = MediaQuery.of(context).size.height;
+    final double paddWidth = MediaQuery.of(context).size.width;
     AppUser? user= Provider.of<AppUser?>(context);
 
     return Scaffold(
@@ -59,14 +62,14 @@ class _AlarmEditState extends State<AlarmEdit> {
             Row(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 80, right: 5, left: 5),
+                  padding: EdgeInsets.only(top: paddHeight * 0.1, right: 5, left: 5),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
-                    width: 382,
-                    height: 190,
-                    padding: EdgeInsets.only(top: 80),
+                    width: size.width * 0.97,
+                    height: size.height * 0.2,
+                    padding: EdgeInsets.only(),
                     child: Padding(
-                      padding: const EdgeInsets.only(bottom: 50),
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Center(
                         child: Container(
                           child: CupertinoDatePicker(
@@ -93,7 +96,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
-                    width: 382,
+                    width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -109,7 +112,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                           Padding(
                             padding: const EdgeInsets.only(left: 100),
                             child: SizedBox(
-                              width: 200,
+                              width: size.width * 0.45,
                               child: TextField(
                                 cursorColor: Colors.deepOrangeAccent,
                                 decoration: InputDecoration(
@@ -140,7 +143,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
-                    width: 382,
+                    width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -154,7 +157,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                                 fontSize: 20),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 220),
+                            padding: EdgeInsets.only(left: paddWidth * 0.5),
                             child: DropDown(),
                           )
                         ],
@@ -171,7 +174,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
                     decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
-                    width: 382,
+                    width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
@@ -185,7 +188,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                                 fontSize: 20),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 220),
+                            padding:  EdgeInsets.only(left: paddWidth * 0.5),
                             child: DropDown(),
                           )
                         ],
@@ -197,7 +200,7 @@ class _AlarmEditState extends State<AlarmEdit> {
             ),
 
             Padding(
-              padding: const EdgeInsets.only(top: 80),
+              padding: EdgeInsets.only(top: paddHeight * 0.05),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[

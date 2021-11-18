@@ -1,17 +1,12 @@
 import 'package:android_alarm_manager/android_alarm_manager.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/services/database_service.dart';
 import 'package:flutter/material.dart';
-import 'package:individual_project/functions/notification_service.dart';
+import 'package:individual_project/services/notification_service.dart';
 import 'package:individual_project/pages/alarmRingPage.dart';
 import 'package:individual_project/pages/start.dart';
 import 'package:provider/provider.dart';
-
 import 'objects/user.dart';
-
-final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +18,7 @@ void main() async {
       ),
       home:WakeMeApp()));
   await AndroidAlarmManager.initialize();
+  NotificationService.init();
 }
 
 
@@ -37,18 +33,22 @@ class _WakeMeAppState extends State<WakeMeApp> {
   @override
   void initState(){
     super.initState();
-    NotificationService.init();
-    listenNotifications();
-
+    listenNotification();
   }
-  void listenNotifications() =>
-      NotificationService.onNotifications.stream.listen(onClickedNotification);
-
-  void onClickedNotification(String? payload) =>
-      Navigator.push(
+  void listenNotification() {
+    NotificationService.onNotifications.stream.listen(onClickedNotification);
+}
+  void onClickedNotification(String? payload) {
+    Navigator.push(
       context,
       MaterialPageRoute<void>(builder: (context) => RingPage()),
-      );
+    );
+  }
+  void dispose(){
+    super.dispose();
+    NotificationService.onNotifications.close();
+  }
+
   @override
   Widget build(BuildContext context) {
       return StreamProvider<AppUser?>.value(

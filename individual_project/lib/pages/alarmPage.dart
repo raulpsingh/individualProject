@@ -2,24 +2,16 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:individual_project/databases/database_service.dart';
+import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/objects/user.dart';
+import 'package:individual_project/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
 import 'alarmAddPage.dart';
 import 'package:individual_project/pages/AlarmEditPage.dart';
 import 'package:individual_project/widgets.dart';
-
-class AlarmPage extends StatelessWidget {
-  const AlarmPage({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return AlarmsList();
-  }
-}
 
 void fireAlarm() {
   print('Alarm fired at ${DateTime.now()}');
@@ -35,7 +27,6 @@ class _AlarmsListState extends State<AlarmsList> {
   DataBaseService db = DataBaseService();
   late StreamSubscription<List<Alarm>> alarmStreamSubscription;
   @override
-
   void dispose() {
     if (alarmStreamSubscription != null) {
       print('unsubscribing');
@@ -53,6 +44,9 @@ class _AlarmsListState extends State<AlarmsList> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+    final double paddHeight = MediaQuery.of(context).size.height;
+    final double paddWidth = MediaQuery.of(context).size.width;
     AppUser user = Provider.of<AppUser>(context);
     loadData(user);
     return Scaffold(
@@ -76,7 +70,7 @@ class _AlarmsListState extends State<AlarmsList> {
                     children: <Widget>[
                       Container(
                           padding:
-                              EdgeInsets.only(top: 80, left: 10, bottom: 3),
+                              EdgeInsets.only(top: paddHeight * 0.1, left: 10, bottom: 3),
                           child: Text(
                             "Next alarm",
                             style: TextStyle(
@@ -110,17 +104,18 @@ class _AlarmsListState extends State<AlarmsList> {
                             .snapshots(),
                         builder: (BuildContext context,
                             AsyncSnapshot<dynamic> snapshot) {
-                          if (!snapshot.hasData) return Text("No records");
                           return ListView.builder(
                               itemCount: alarms.length,
                               itemBuilder: (context, index) {
                                 return Dismissible(
                                     key: UniqueKey(),
                                     onDismissed: (direction) {
+                                      NotificationService.removeNotification(alarms[index]);
                                       db.removeAlarm(alarms[index]);
                                       setState(() {
                                         alarms.removeAt(index);
                                       });
+
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -152,9 +147,9 @@ class _AlarmsListState extends State<AlarmsList> {
                                                             EdgeInsets.only(
                                                                 left: 20,
                                                                 top: 20),
-                                                        height: 50,
-                                                        width: 250,
-                                                        child: Text(
+                                                                height: 50,
+                                                                width:  MediaQuery.of(context).size.width * 0.6,
+                                                                child: Text(
                                                           dateFormat(
                                                                   alarms[index]
                                                                       .time)
@@ -183,6 +178,11 @@ class _AlarmsListState extends State<AlarmsList> {
                                                           value: alarms[index]
                                                               .status,
                                                           onChanged: (value) {
+                                                            if (value == true){
+                                                              NotificationService.showNotification(alarms[index]);
+                                                            }if (value == false){
+                                                              NotificationService.removeNotification(alarms[index]);
+                                                            }
                                                             setState(
                                                               () {
                                                                 alarms[index]

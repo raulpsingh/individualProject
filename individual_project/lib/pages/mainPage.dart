@@ -11,17 +11,14 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   int _currentIndex = 0;
-  final tabs = [AlarmPage(), StatisticsPage(), SettingsPage()];
+  final tabs = [AlarmsList(), StatisticsPage(), SettingsPage()];
   @override
   Widget build(BuildContext context) {
-    String appTitle = 'WakeMeUp';
-    Color selectedColor = Colors.deepOrangeAccent;
     SnakeShape snakeShape = SnakeShape.circle;
     bool showSelectedLabels = false;
     bool showUnselectedLabels = true;
     Gradient selectedGradient =
         const LinearGradient(colors: [Colors.red, Colors.amber]);
-    Color unselectedColor = Colors.blueGrey;
     Gradient unselectedGradient =
         const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
     Gradient backGround =

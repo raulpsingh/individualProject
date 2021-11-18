@@ -44,11 +44,6 @@ class AuthService {
   }
 }
 
-void insert( String label, DateTime time, {bool status=true} ){
-  List a=[label, time, status];
-  FirebaseFirestore.instance.collection('Alarms').add({'Alarm': a});
-}
-
 class DataBaseService{
   final CollectionReference _alarmsCollection = FirebaseFirestore.instance.collection('alarms');
 
