@@ -1,6 +1,8 @@
+import "package:easy_localization/easy_localization.dart";
 import 'package:flutter/material.dart';
 import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/objects/user.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:individual_project/widgets.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
@@ -30,23 +32,22 @@ class _LoginPageState extends State<LoginPage> {
           child: Column(
         children: <Widget>[
           Padding(
-              padding: EdgeInsets.only(bottom: 20, top: paddHeight*0.07),
+              padding: EdgeInsets.only(
+                  bottom: paddHeight * 0.03, top: paddHeight * 0.07),
               child: input(RadiantGradientMask(child: Icon(Icons.email)),
-                  "Email", _emailController, false)),
+                  LocaleKeys.email_text.tr(), _emailController, false)),
           Padding(
-              padding: EdgeInsets.only(bottom: 20),
+              padding: EdgeInsets.only(bottom: paddHeight * 0.02),
               child: input(
                   RadiantGradientMask(child: Icon(Icons.password_rounded)),
-                  "Password",
+                  LocaleKeys.password_text.tr(),
                   _passwordController,
                   true)),
-          SizedBox(
-            height: 20,
-          ),
           Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
+            padding: EdgeInsets.only(
+                left: paddWidth * 0.05, right: paddWidth * 0.05),
             child: Container(
-              height: 50,
+              height: size.height * 0.08,
               width: MediaQuery.of(context).size.width,
               child: loginButton(label, func),
             ),
@@ -65,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
           _email.trim(), _password.trim());
       if (user == null) {
         showToast(
-          'Sign in failed. Please check your email and password.',
+          LocaleKeys.sign_in_failed_text.tr(),
           textStyle: TextStyle(color: Colors.white),
           backgroundColor: Colors.white12,
           context: context,
@@ -93,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
           _email.trim(), _password.trim());
       if (user == null) {
         showToast(
-          'Registration failed. Please check your email and password.',
+          LocaleKeys.registration_failed_text.tr(),
           textStyle: TextStyle(color: Colors.white),
           backgroundColor: Colors.white12,
           context: context,
@@ -125,19 +126,19 @@ class _LoginPageState extends State<LoginPage> {
                 image: AssetImage('assets/mountains.png')),
           ),
           child: Padding(
-            padding: const EdgeInsets.only(top: 30),
+            padding: EdgeInsets.only(top: paddHeight * 0.03),
             child: Column(
               children: <Widget>[
                 logo(),
                 (showLogin
                     ? Column(
                         children: <Widget>[
-                          _form('Login', _loginButton),
+                          _form(LocaleKeys.login_text.tr(), _loginButton),
                           Padding(
-                            padding: EdgeInsets.only(top: 15),
+                            padding: EdgeInsets.only(top: paddHeight * 0.03),
                             child: GestureDetector(
                               child: Text(
-                                "Register",
+                                LocaleKeys.register_text.tr(),
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontFamily: 'Nexa',
@@ -156,12 +157,12 @@ class _LoginPageState extends State<LoginPage> {
                       )
                     : Column(
                         children: <Widget>[
-                          _form('Register', _registerButton),
+                          _form(LocaleKeys.register_text.tr(), _registerButton),
                           Padding(
-                            padding: EdgeInsets.only(top: 15),
+                            padding: EdgeInsets.only(top: paddHeight * 0.03),
                             child: GestureDetector(
                               child: Text(
-                                "Already registered? Login",
+                                LocaleKeys.already_registered_text.tr(),
                                 style: TextStyle(
                                     fontSize: 20,
                                     fontFamily: 'Nexa',
@@ -178,6 +179,23 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       )),
+
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: paddWidth*0.02),
+                        child: Container(
+                            width: size.width*0.4,
+                            height:  size.height*0.07,
+                            child: DropDown()),
+                      )
+                    ],),
+                  ),
+                )
               ],
             ),
           )),

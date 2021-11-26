@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:individual_project/objects/alarmObject.dart';
+import 'package:individual_project/objects/historyObject.dart';
 import 'package:individual_project/objects/user.dart';
 
 
@@ -46,6 +47,18 @@ class AuthService {
 
 class DataBaseService{
   final CollectionReference _alarmsCollection = FirebaseFirestore.instance.collection('alarms');
+  final CollectionReference _historyCollection = FirebaseFirestore.instance.collection('history');
+
+  Future addHistory(History history) async{
+    return await _historyCollection.doc(history.uid).set(history.toMap());
+  }
+  Stream<List<History>> getHistory(String? author){
+    Query query;
+    query = _historyCollection.where('author',isEqualTo: author);
+    return query.snapshots().map((QuerySnapshot data) =>
+    data.docs.map((DocumentSnapshot doc) => History.fromJson(doc.id, doc.data() as Map<String,dynamic>)).toList()
+    );
+  }
 
   Future addAndEditAlarms(Alarm alarm) async{
     return await _alarmsCollection.doc(alarm.uid).set(alarm.toMap());
@@ -66,7 +79,10 @@ class DataBaseService{
     data.docs.map((DocumentSnapshot doc) => Alarm.fromJson(doc.id,doc.data() as Map<String, dynamic>)).toList());
 
   }
-
-
-
+  Future removeHistoryAll() async {
+    var snapshots = await _historyCollection.get();
+    for (var doc in snapshots.docs) {
+      await doc.reference.delete();
+    }
+  }
 }

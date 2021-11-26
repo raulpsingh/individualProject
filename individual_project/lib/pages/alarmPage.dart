@@ -2,20 +2,20 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:individual_project/services/database_service.dart';
+import 'package:individual_project/functions/audio.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/services/notification_service.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:provider/provider.dart';
 import '../widgets.dart';
 import 'alarmAddPage.dart';
 import 'package:individual_project/pages/AlarmEditPage.dart';
 import 'package:individual_project/widgets.dart';
+import "package:easy_localization/easy_localization.dart";
 
-void fireAlarm() {
-  print('Alarm fired at ${DateTime.now()}');
-}
+List alarms = <Alarm>[];
 
 class AlarmsList extends StatefulWidget {
   @override
@@ -23,27 +23,76 @@ class AlarmsList extends StatefulWidget {
 }
 
 class _AlarmsListState extends State<AlarmsList> {
-  List alarms = <Alarm>[];
-  DataBaseService db = DataBaseService();
   late StreamSubscription<List<Alarm>> alarmStreamSubscription;
+  String timeTo = LocaleKeys.no_scheduled_alarms.tr();
+  String alarmIn = LocaleKeys.in_text.tr();
+  String? b;
+  Timer? timer;
+
   @override
   void dispose() {
     if (alarmStreamSubscription != null) {
       print('unsubscribing');
       alarmStreamSubscription.cancel();
     }
+
+    if(timer!.isActive == false){
+      print("Timer canceled");
+      timer!.cancel();
+    }
     super.dispose();
   }
 
   Future<void> loadData(AppUser user) async {
-    var stream = db.getAlarms(user.id);
+    var stream = getAlarms(user);
     alarmStreamSubscription = stream.listen((List<Alarm> data) {
       alarms = data;
     });
   }
 
+  void findNearest() {
+    List times = <Timestamp>[];
+    List<DateTime> time = <DateTime>[];
+    final now = DateTime.now();
+    if (alarms != null) {
+      for (int i = 0; i < alarms.length; i++) {
+        times.add(alarms[i].time);
+      }
+      for (int b = 0; b < times.length; b++) {
+        time.add(times[b].toDate());
+      }
+    }
+    if (time.isNotEmpty) {
+      b = format(test(time));
+    }
+  }
+
+  void timeLeft() {
+    if (b != null) {
+      if(mounted)setState(() {
+      timeTo = '$alarmIn  $b';
+      });
+    }if(b == null){
+      if(mounted)setState(() {
+     timeTo =LocaleKeys.no_scheduled_alarms.tr();
+    });
+    }
+  }
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+  void startTimer(){
+    timer = Timer.periodic(Duration(seconds: 1),(_){
+      findNearest();
+      timeLeft();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    AudioService.stopAudio();
     final Size size = MediaQuery.of(context).size;
     final double paddHeight = MediaQuery.of(context).size.height;
     final double paddWidth = MediaQuery.of(context).size.width;
@@ -69,10 +118,10 @@ class _AlarmsListState extends State<AlarmsList> {
                   Row(
                     children: <Widget>[
                       Container(
-                          padding:
-                              EdgeInsets.only(top: paddHeight * 0.1, left: 10, bottom: 3),
+                          padding: EdgeInsets.only(
+                              top: paddHeight * 0.1, left: 10, bottom: 3),
                           child: Text(
-                            "Next alarm",
+                            LocaleKeys.next_alarm_text.tr(),
                             style: TextStyle(
                                 fontFamily: 'Nexa',
                                 fontWeight: FontWeight.bold,
@@ -86,11 +135,11 @@ class _AlarmsListState extends State<AlarmsList> {
                           padding:
                               EdgeInsets.only(top: 1, left: 10, bottom: 10),
                           child: Text(
-                            'No scheduled alarms',
+                            timeTo,
                             style: TextStyle(
-                                fontFamily: 'Nexa',
+                                fontFamily: 'NexaXBold',
                                 fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                                fontSize: 18),
                           )),
                     ],
                   ),
@@ -110,12 +159,13 @@ class _AlarmsListState extends State<AlarmsList> {
                                 return Dismissible(
                                     key: UniqueKey(),
                                     onDismissed: (direction) {
-                                      NotificationService.removeNotification(alarms[index]);
-                                      db.removeAlarm(alarms[index]);
+                                      timer!.cancel();
+                                      NotificationService.removeNotification(
+                                          alarms[index]);
+                                      removeAlarm(alarms[index]);
                                       setState(() {
                                         alarms.removeAt(index);
                                       });
-
                                     },
                                     child: Padding(
                                       padding: const EdgeInsets.only(
@@ -137,7 +187,7 @@ class _AlarmsListState extends State<AlarmsList> {
                                             ),
                                             elevation: 10,
                                             child: Container(
-                                              height: 100,
+                                              height: size.height * 0.15,
                                               child: Column(
                                                 children: [
                                                   Row(
@@ -147,12 +197,15 @@ class _AlarmsListState extends State<AlarmsList> {
                                                             EdgeInsets.only(
                                                                 left: 20,
                                                                 top: 20),
-                                                                height: 50,
-                                                                width:  MediaQuery.of(context).size.width * 0.6,
-                                                                child: Text(
+                                                        height:
+                                                            size.height * 0.07,
+                                                        width: size.width * 0.6,
+                                                        child: Text(
                                                           dateFormat(
                                                                   alarms[index]
-                                                                      .time)
+                                                                      .time,
+                                                                  context.locale
+                                                                      .toString())
                                                               .toString(),
                                                           style: TextStyle(
                                                               fontFamily:
@@ -169,8 +222,11 @@ class _AlarmsListState extends State<AlarmsList> {
                                                       Container(
                                                         padding:
                                                             EdgeInsets.only(
-                                                                top: 28),
-                                                        width: 122,
+                                                                top:
+                                                                    paddHeight *
+                                                                        0.045),
+                                                        width:
+                                                            size.width * 0.35,
                                                         transformAlignment:
                                                             Alignment
                                                                 .centerRight,
@@ -178,17 +234,25 @@ class _AlarmsListState extends State<AlarmsList> {
                                                           value: alarms[index]
                                                               .status,
                                                           onChanged: (value) {
-                                                            if (value == true){
-                                                              NotificationService.showNotification(alarms[index]);
-                                                            }if (value == false){
-                                                              NotificationService.removeNotification(alarms[index]);
+                                                            if (value == true) {
+                                                              NotificationService
+                                                                  .showNotification(
+                                                                      alarms[
+                                                                          index]);
+                                                            }
+                                                            if (value ==
+                                                                false) {
+                                                              NotificationService
+                                                                  .removeNotification(
+                                                                      alarms[
+                                                                          index]);
                                                             }
                                                             setState(
                                                               () {
                                                                 alarms[index]
                                                                         .status =
                                                                     value;
-                                                                db.addAndEditAlarms(
+                                                                editAlarm(
                                                                     alarms[
                                                                         index]);
                                                               },
@@ -205,7 +269,9 @@ class _AlarmsListState extends State<AlarmsList> {
                                                       Container(
                                                         padding:
                                                             EdgeInsets.only(
-                                                                left: 20),
+                                                                left:
+                                                                    paddWidth *
+                                                                        0.06),
                                                         child: Text(
                                                           alarms[index]
                                                               .label
@@ -245,7 +311,7 @@ class _AlarmsListState extends State<AlarmsList> {
             ),
           )),
       floatingActionButton: Container(
-        padding: EdgeInsets.only(bottom: 60),
+        padding: EdgeInsets.only(bottom: size.height * 0.1),
         child: FloatingActionButton(
             child: Icon(Icons.add, size: 35),
             backgroundColor: Colors.deepOrangeAccent,

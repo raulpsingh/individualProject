@@ -1,17 +1,16 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/objects/missionObject.dart';
 import 'package:individual_project/pages/missionsPage.dart';
-import 'package:individual_project/services/notification_service.dart';
-import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/pages/mainPage.dart';
-import 'package:individual_project/widgets.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:provider/provider.dart';
 
 DateTime time = DateTime.now();
-
+String mission = LocaleKeys.off_text.tr();
 class AlarmAdd extends StatefulWidget {
   const AlarmAdd({Key? key}) : super(key: key);
 
@@ -21,15 +20,22 @@ class AlarmAdd extends StatefulWidget {
 
 class _AlarmAddState extends State<AlarmAdd> {
   TextEditingController num1controller = TextEditingController();
+  DateTime _time = DateTime.now();
 
+void checkMission(){
+
+ setState(() {
+   mission= MissionHelper.getMission();
+ });
+}
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double paddHeight = MediaQuery.of(context).size.height;
     final double paddWidth = MediaQuery.of(context).size.width;
     AppUser? user = Provider.of<AppUser?>(context);
-    DateTime _time = DateTime.now();
 
+    checkMission();
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey,
@@ -62,11 +68,10 @@ class _AlarmAddState extends State<AlarmAdd> {
                       child: Center(
                         child: Container(
                           child: CupertinoDatePicker(
-                            initialDateTime: _time,
+                            initialDateTime: time,
                             onDateTimeChanged: (datetime) {
                               setState(() {
                                 time = datetime;
-                                print(datetime);
                               });
                             },
                             use24hFormat: true,
@@ -94,14 +99,14 @@ class _AlarmAddState extends State<AlarmAdd> {
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "Label",
+                            LocaleKeys.label_text.tr(),
                             style: TextStyle(
                                 fontFamily: "Nexa",
                                 fontWeight: FontWeight.bold,
                                 fontSize: 20),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 100),
+                            padding: EdgeInsets.only(left: paddWidth*0.15),
                             child: SizedBox(
                               width: size.width * 0.45,
                               child: TextField(
@@ -148,15 +153,15 @@ class _AlarmAddState extends State<AlarmAdd> {
                         child: Row(
                           children: <Widget>[
                             Text(
-                              "Mission",
+                              LocaleKeys.mission_text.tr(),
                               style: TextStyle(
                                   fontFamily: "Nexa",
                                   fontWeight: FontWeight.bold,
                                   fontSize: 20),
                             ),
                             Padding(
-                              padding: EdgeInsets.only(left: paddWidth * 0.5),
-                              child: DropDown(),
+                              padding: EdgeInsets.only(left: paddWidth * 0.43),
+                              child:Text(mission,style: TextStyle(fontFamily: "NexaXBold",fontSize: 20,fontWeight: FontWeight.bold,color: Colors.deepOrangeAccent),),
                             )
                           ],
                         ),
@@ -181,7 +186,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "Sound",
+                            LocaleKeys.sound_text.tr(),
                             style: TextStyle(
                                 fontFamily: "Nexa",
                                 fontWeight: FontWeight.bold,
@@ -189,7 +194,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                           ),
                           Padding(
                             padding: EdgeInsets.only(left: paddWidth * 0.5),
-                            child: DropDown(),
+                            child: Text("Sound"),
                           )
                         ],
                       ),
@@ -209,7 +214,7 @@ class _AlarmAddState extends State<AlarmAdd> {
                             MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
-                        "Cancel",
+                        LocaleKeys.cancel_text.tr(),
                         style: TextStyle(
                             fontFamily: 'Nexa',
                             fontWeight: FontWeight.bold,
@@ -218,20 +223,12 @@ class _AlarmAddState extends State<AlarmAdd> {
                       )),
                   TextButton(
                       onPressed: () {
-                        Timestamp stamp = Timestamp.fromDate(time);
-                        Alarm a = Alarm(
-                            id: randomId(),
-                            author: user!.id,
-                            label: num1controller.text,
-                            time: stamp,
-                            status: true);
-                        saveAlarm(a);
-                        NotificationService.showNotification(a);
+                        addAlarm(time, user,num1controller.text);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
-                        "Done",
+                        LocaleKeys.done_text.tr(),
                         style: TextStyle(
                             fontFamily: 'Nexa',
                             fontWeight: FontWeight.bold,

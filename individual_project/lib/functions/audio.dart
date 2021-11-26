@@ -10,7 +10,7 @@ class AudioService{
   static openingActions() async {
     player = await cache.loop('ALongCold.mp3');
   }
-  static stopAudio()async{
+  static stopAudio(){
     player.stop();
   }
 }

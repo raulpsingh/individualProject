@@ -1,43 +1,39 @@
 import 'dart:ui';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 import 'package:individual_project/functions/audio.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/functions/randomExamples.dart';
+import 'package:individual_project/objects/alarmObject.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
+import 'package:individual_project/functions/timer.dart';
+import 'package:individual_project/objects/historyObject.dart';
 
 class RingMath extends StatefulWidget {
-  const RingMath({Key? key}) : super(key: key);
-
+  final Alarm? alarm;
+  const RingMath({Key? key, required this.alarm}) : super(key: key);
   @override
   _RingMathState createState() => _RingMathState();
 }
 
 class _RingMathState extends State<RingMath> {
+  int a = 1;
   String _result = "";
-  List? _example = generateEasyMath();
-  bool? checkResult() {
-    int num1 = int.parse(_example![0]);
-    int num2 = int.parse(_example![2]);
-    if (_example![1] == "+") {
-      int _checkResult = num1 + num2;
-      print(_checkResult.toString());
-      if (int.parse(_result) == _checkResult) {
-        return true;
-      } else
-        return false;
-    }
-    if (_example![1] == "-") {
-      int _checkResult = num1 - num2;
-      print(_checkResult.toString());
-      if (int.parse(_result) == _checkResult) {
-        return true;
-      } else
-        return false;
-    }
-  }
-
+  List? _example;
   @override
   Widget build(BuildContext context) {
+    void getMathProblem() {
+      if (_example == null) {
+        _example = generateMath(widget.alarm);
+      }
+    }
+    void getNewMathProblem(){
+      _example=generateMath(widget.alarm);
+    }
+
+    getMathProblem();
+
     final Size size = MediaQuery.of(context).size;
     final double paddHeight = MediaQuery.of(context).size.height;
     final double paddWidth = MediaQuery.of(context).size.width;
@@ -59,9 +55,9 @@ class _RingMathState extends State<RingMath> {
             child: Column(
               children: [
                 Padding(
-                  padding:  EdgeInsets.only(top: paddHeight *0.25),
+                  padding: EdgeInsets.only(top: paddHeight * 0.25),
                   child: Container(
-                    width: 180,
+                    width: size.width * 0.7,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
@@ -78,13 +74,13 @@ class _RingMathState extends State<RingMath> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(top: paddHeight *0.03),
+                  padding: EdgeInsets.only(top: paddHeight * 0.03),
                   child: Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       color: Colors.white30,
                     ),
-                    width: size.width*0.6,
+                    width: size.width * 0.6,
                     height: 70,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -108,9 +104,9 @@ class _RingMathState extends State<RingMath> {
                                   border: Border.all(
                                       color: Colors.deepOrangeAccent,
                                       width: 3)),
-                              width: paddWidth*0.45,
-                              height: paddHeight*0.45,
-                              padding: EdgeInsets.only(left: 50),
+                              width: paddWidth * 0.45,
+                              height: paddHeight * 0.45,
+                              padding: EdgeInsets.only(left: paddWidth * 0.1),
                               child: Text(
                                 _result,
                                 style: TextStyle(
@@ -123,18 +119,18 @@ class _RingMathState extends State<RingMath> {
                   ),
                 ),
                 Padding(
-                  padding:  EdgeInsets.only(top:paddHeight*0.11),
+                  padding: EdgeInsets.only(top: paddHeight * 0.12),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
                         color: Colors.white60,
-                        height: 97,
-                        width: size.width *0.25,
+                        height: size.height * 0.14,
+                        width: size.width * 0.25,
                         child: TextButton(
                           onPressed: () {
                             setState(() {
-                              if (_result.length < 2) {
+                              if (_result.length < 3) {
                                 _result = _result + "1";
                               }
                             });
@@ -148,13 +144,13 @@ class _RingMathState extends State<RingMath> {
                         ),
                       ),
                       Container(
-                        height: 97,
-                        width: size.width *0.25,
+                        height: size.height * 0.14,
+                        width: size.width * 0.25,
                         color: Colors.white60,
                         child: TextButton(
                           onPressed: () {
                             setState(() {
-                              if (_result.length < 2) {
+                              if (_result.length < 3) {
                                 _result = _result + "2";
                               }
                             });
@@ -168,13 +164,13 @@ class _RingMathState extends State<RingMath> {
                         ),
                       ),
                       Container(
-                        height: 97,
-                        width: size.width *0.25,
+                        height: size.height * 0.14,
+                        width: size.width * 0.25,
                         color: Colors.white60,
                         child: TextButton(
                           onPressed: () {
                             setState(() {
-                              if (_result.length < 2) {
+                              if (_result.length < 3) {
                                 _result = _result + "3";
                               }
                             });
@@ -188,8 +184,8 @@ class _RingMathState extends State<RingMath> {
                         ),
                       ),
                       Container(
-                        height: 97,
-                        width: size.width *0.25,
+                        height: size.height * 0.14,
+                        width: size.width * 0.25,
                         color: Colors.red.withOpacity(0.2),
                         child: TextButton(
                             onPressed: () {
@@ -210,13 +206,13 @@ class _RingMathState extends State<RingMath> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "4";
                             }
                           });
@@ -230,13 +226,13 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "5";
                             }
                           });
@@ -250,13 +246,13 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "6";
                             }
                           });
@@ -270,32 +266,63 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.green.withOpacity(0.4),
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (checkResult() == true) {
-                              print("true");
-                              AudioService.stopAudio();
-                              Navigator.of(context).popUntil((route) => route.isFirst);
-                            }
-                            if (checkResult() == false) {
-                              showToast(
-                                'Your answer is wrong',
-                                textStyle: TextStyle(color: Colors.white),
-                                backgroundColor: Colors.deepOrangeAccent,
-                                context: context,
-                                animation: StyledToastAnimation.scale,
-                                reverseAnimation: StyledToastAnimation.fade,
-                                position: StyledToastPosition.center,
-                                animDuration: Duration(seconds: 1),
-                                duration: Duration(seconds: 4),
-                                curve: Curves.elasticOut,
-                                reverseCurve: Curves.linear,
-                              );
-                              print("false");
+                            int? b = widget.alarm!.numberOfProblems;
+                            if (a < b!) {
+                                if (checkResult(_example, _result) == true) {
+                                  _example!.clear();
+                                  getNewMathProblem();
+                                  a++;
+                                  _result="";
+                                }else if (checkResult(_example, _result) == false) {
+                                  showToast(
+                                    LocaleKeys.you_answer_wrong_text.tr(),
+                                    textStyle: TextStyle(color: Colors.white),
+                                    backgroundColor: Colors.deepOrangeAccent,
+                                    context: context,
+                                    animation: StyledToastAnimation.scale,
+                                    reverseAnimation: StyledToastAnimation.fade,
+                                    position: StyledToastPosition.center,
+                                    animDuration: Duration(seconds: 1),
+                                    duration: Duration(seconds: 4),
+                                    curve: Curves.elasticOut,
+                                    reverseCurve: Curves.linear,
+                                  );
+                                  print("false");
+                                }
+                            }else if(a>=b) {
+                              if (checkResult(_example, _result) == true) {
+                                print("true");
+                                TimerCountUp.stopTimer();
+                                int? timer = TimerCountUp.getTimerTime();
+                                History a = History(author: widget.alarm!.author, mission: widget.alarm!.mission, time: widget.alarm!.time, timer: timer!);
+                                addHistory(a);
+                                AudioService.stopAudio();
+                                Alarm toRemove = widget.alarm!;
+                                removeAlarm(toRemove);
+                                Navigator.of(context)
+                                    .popUntil((route) => route.isFirst);
+                              } else if (checkResult(_example, _result) == false) {
+                                showToast(
+                                  LocaleKeys.you_answer_wrong_text.tr(),
+                                  textStyle: TextStyle(color: Colors.white),
+                                  backgroundColor: Colors.deepOrangeAccent,
+                                  context: context,
+                                  animation: StyledToastAnimation.scale,
+                                  reverseAnimation: StyledToastAnimation.fade,
+                                  position: StyledToastPosition.center,
+                                  animDuration: Duration(seconds: 1),
+                                  duration: Duration(seconds: 4),
+                                  curve: Curves.elasticOut,
+                                  reverseCurve: Curves.linear,
+                                );
+                                print("false");
+                              }
                             }
                           });
                         },
@@ -312,13 +339,13 @@ class _RingMathState extends State<RingMath> {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "7";
                             }
                           });
@@ -332,13 +359,13 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "8";
                             }
                           });
@@ -352,13 +379,13 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "9";
                             }
                           });
@@ -372,13 +399,13 @@ class _RingMathState extends State<RingMath> {
                       ),
                     ),
                     Container(
-                      height: 98,
-                      width: size.width *0.25,
+                      height: size.height * 0.14,
+                      width: size.width * 0.25,
                       color: Colors.white60,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
-                            if (_result.length < 2) {
+                            if (_result.length < 3) {
                               _result = _result + "0";
                             }
                           });

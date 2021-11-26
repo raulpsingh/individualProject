@@ -1,8 +1,10 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/pages/alarmPage.dart';
 import 'package:individual_project/pages/settingsPage.dart';
 import 'package:flutter_snake_navigationbar/flutter_snake_navigationbar.dart';
 import 'package:individual_project/pages/statisticPage.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 
 class MainPage extends StatefulWidget {
   @override
@@ -22,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     Gradient unselectedGradient =
         const LinearGradient(colors: [Colors.red, Colors.blueGrey]);
     Gradient backGround =
-        const LinearGradient(colors: [Colors.white54, Colors.white54]);
+        const LinearGradient(colors: [Colors.white, Colors.white]);
 
     return MaterialApp(
       home: Scaffold(
@@ -44,11 +46,11 @@ class _MainPageState extends State<MainPage> {
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.alarm), label: 'Alarms'),
+            BottomNavigationBarItem(icon: Icon(Icons.alarm), label: LocaleKeys.alarms_text.tr() ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.analytics), label: 'Statistics'),
+                icon: Icon(Icons.analytics), label: LocaleKeys.statistics_text.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: 'Settings'),
+                icon: Icon(Icons.settings), label: LocaleKeys.setting_text.tr()),
           ],
         ),
       ),

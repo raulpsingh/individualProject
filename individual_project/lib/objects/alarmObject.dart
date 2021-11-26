@@ -1,5 +1,4 @@
 
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Alarm{
@@ -9,8 +8,11 @@ class Alarm{
   String? label;
   late Timestamp time;
   late bool status;
+  late int mission;
+  late int? numberOfProblems;
+  late int? difficulty;
 
-  Alarm({this.id,this.uid,this.author, this.label,required this.time, required this.status});
+  Alarm({this.id,this.uid,this.author, this.label,required this.time, required this.status,this.mission=0,this.difficulty,this.numberOfProblems});
 
 
 
@@ -20,7 +22,10 @@ class Alarm{
       "author" : author,
       "label" : label,
       "time" : time,
-      "status" : status
+      "status" : status,
+      "mission" : mission,
+      "numberOfProblems" : numberOfProblems,
+      "difficulty" : difficulty,
     };
   }
 
@@ -31,14 +36,9 @@ class Alarm{
     label = data['label'];
     time = data['time'];
     status = data['status'];
-
-
-
+    mission = data['mission'];
+    numberOfProblems = data['numberOfProblems'];
+    difficulty = data['difficulty'];
   }
-
-
-
-
-
 }
 

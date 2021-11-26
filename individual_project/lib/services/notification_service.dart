@@ -10,7 +10,6 @@ static final onNotifications= BehaviorSubject<String?>();
 static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
 FlutterLocalNotificationsPlugin();
 
-
   static Future init () async{
     const AndroidInitializationSettings initializationSettingsAndroid =
     AndroidInitializationSettings('@drawable/ic_launcher_adaptive_fore');
@@ -25,10 +24,12 @@ FlutterLocalNotificationsPlugin();
 
   static Future showNotification(Alarm a) async {
     DateTime _time = a.time.toDate();
+    if(_time.isBefore(DateTime.now())){
+      _time=_time.add(Duration(days:1));
+    }
     String _stringTime= formatDate(_time);
     int id = 0;
     id = a.id!;
-
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
     AndroidNotificationDetails(
         "main_channel 2",
@@ -42,22 +43,9 @@ FlutterLocalNotificationsPlugin();
       _time,
       NotificationDetails(
         android: androidPlatformChannelSpecifics,
-      ),
+      ), payload: id.toString()
     );
   }
-
-  static Future _checkPendingNotificationRequests() async {
-    var pendingNotificationRequests =
-    await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    for (var pendingNotificationRequest in pendingNotificationRequests) {
-      debugPrint(
-          'pending notification: [id: ${pendingNotificationRequest
-              .id}, title: ${pendingNotificationRequest
-              .title}, body: ${pendingNotificationRequest
-              .body}, payload: ${pendingNotificationRequest.payload}]');
-    }
-  }
-
   static Future removeNotification(Alarm a )async{
     int id = a.id!;
     flutterLocalNotificationsPlugin.cancel(id);
@@ -70,4 +58,17 @@ FlutterLocalNotificationsPlugin();
               .body}, payload: ${pendingNotificationRequest.payload}]');
     }
   }
+  static Future<void> findNotification() async{
+    List pendingNotificationRequests = await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    for (var pendingNotificationRequest in pendingNotificationRequests) {
+      print(
+          'pending notification: [id: ${pendingNotificationRequest
+              .id}, title: ${pendingNotificationRequest
+              .title}, body: ${pendingNotificationRequest
+              .body}, payload: ${pendingNotificationRequest.payload}]');
+    }
+
+  }
+
+
 }

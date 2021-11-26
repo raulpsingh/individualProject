@@ -1,4 +1,6 @@
+import 'package:easy_localization/src/public_ext.dart';
 import 'package:flutter/material.dart';
+import 'package:ndialog/ndialog.dart';
 
 import 'functions/functions.dart';
 
@@ -86,21 +88,29 @@ class DropDown extends StatefulWidget {
   State<DropDown> createState() => _DropDownState();
 }
 
-/// This is the private State class that goes with MyStatefulWidget.
+
 class _DropDownState extends State<DropDown> {
-  String dropdownValue = 'One';
+
+  String dropdownValue = 'English';
 
   @override
   Widget build(BuildContext context) {
+    print(context.locale.toString());
+    if(context.locale.toString()=='ru'){
+      dropdownValue="Russian";
+    }if(context.locale.toString()=="en"){
+      dropdownValue=="English";
+    }
     return DropdownButton<String>(
+      dropdownColor: Colors.white60,
       value: dropdownValue,
       icon: const Icon(
-        Icons.arrow_downward,
+      Icons.language,
         color: Colors.deepOrangeAccent,
       ),
       iconSize: 24,
       elevation: 16,
-      style: const TextStyle(color: Colors.deepOrangeAccent),
+      style: const TextStyle(color: Colors.deepOrangeAccent,fontSize: 20,fontFamily: "NexaXBold"),
       underline: Container(
         height: 2,
         color: Colors.deepOrangeAccent,
@@ -108,9 +118,14 @@ class _DropDownState extends State<DropDown> {
       onChanged: (String? newValue) {
         setState(() {
           dropdownValue = newValue!;
+          if(dropdownValue=="Russian"){
+            context.setLocale(Locale('ru'),);
+          }else if(dropdownValue=="English"){
+            context.setLocale(Locale('en'),);
+          }
         });
       },
-      items: <String>['One', 'Two', 'Free', 'Four']
+      items: <String>['English', 'Russian',]
           .map<DropdownMenuItem<String>>((String value) {
         return DropdownMenuItem<String>(
           value: value,
@@ -120,3 +135,51 @@ class _DropDownState extends State<DropDown> {
     );
   }
 }
+
+class LanguageDialog extends StatefulWidget {
+  const LanguageDialog({Key? key}) : super(key: key);
+
+  @override
+  _LanguageDialogState createState() => _LanguageDialogState();
+}
+
+class _LanguageDialogState extends State<LanguageDialog> {
+  int? val = -1;
+  @override
+     Widget build (BuildContext context)  {
+    print("A");
+    return AlertDialog(
+      title: Text("Select language"),
+         actions : [
+           ListTile(
+            title: Text("Male"),
+            leading: Radio(
+              value: 1,
+              groupValue: val,
+              onChanged: (value) {
+                setState(() {
+                  val = value as int?;
+                });
+              },
+              activeColor: Colors.green,
+            ),
+          ),
+          ListTile(
+            title: Text("Female"),
+            leading: Radio(
+              value: 2,
+              groupValue: val,
+              onChanged: (value) {
+                setState(() {
+                  val = value as int?;
+                });
+              },
+              activeColor: Colors.green,
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+
