@@ -40,9 +40,10 @@ class _RingWritingState extends State<RingWriting> {
         phrase = generatePhrase(widget.alarm)!;
       }
     }
-    void getNewPhrase(){
+
+    void getNewPhrase() {
       setState(() {
-      phrase= generatePhrase(widget.alarm);
+        phrase = generatePhrase(widget.alarm);
       });
     }
 
@@ -137,71 +138,76 @@ class _RingWritingState extends State<RingWriting> {
                                     onPressed: () {
                                       setState(() {
                                         int? b = widget.alarm!.numberOfProblems;
-                                      if (a < b!) {
-                                        if (checkPhrase() ==
-                                            true) {
-                                          phrase="";
-                                          getNewPhrase();
-                                          a++;
-                                          _phraseController.clear();
-                                        } else if (checkPhrase() ==
-                                            false) {
-                                          showToast(
-                                            LocaleKeys.you_answer_wrong_text
-                                                .tr(),
-                                            textStyle:
-                                                TextStyle(color: Colors.white),
-                                            backgroundColor:
-                                                Colors.deepOrangeAccent,
-                                            context: context,
-                                            animation:
-                                                StyledToastAnimation.scale,
-                                            reverseAnimation:
-                                                StyledToastAnimation.fade,
-                                            position:
-                                                StyledToastPosition.center,
-                                            animDuration: Duration(seconds: 1),
-                                            duration: Duration(seconds: 4),
-                                            curve: Curves.elasticOut,
-                                            reverseCurve: Curves.linear,
-                                          );
-                                          print("false");
+                                        if (a < b!) {
+                                          if (checkPhrase() == true) {
+                                            phrase = "";
+                                            getNewPhrase();
+                                            a++;
+                                            _phraseController.clear();
+                                          } else if (checkPhrase() == false) {
+                                            showToast(
+                                              LocaleKeys.you_answer_wrong_text
+                                                  .tr(),
+                                              textStyle: TextStyle(
+                                                  color: Colors.white),
+                                              backgroundColor:
+                                                  Colors.deepOrangeAccent,
+                                              context: context,
+                                              animation:
+                                                  StyledToastAnimation.scale,
+                                              reverseAnimation:
+                                                  StyledToastAnimation.fade,
+                                              position:
+                                                  StyledToastPosition.center,
+                                              animDuration:
+                                                  Duration(seconds: 1),
+                                              duration: Duration(seconds: 4),
+                                              curve: Curves.elasticOut,
+                                              reverseCurve: Curves.linear,
+                                            );
+                                            print("false");
+                                          }
+                                        } else if (a >= b) {
+                                          if (checkPhrase() == true) {
+                                            print("true");
+                                            TimerCountUp.stopTimer();
+                                            int? timer =
+                                                TimerCountUp.getTimerTime();
+                                            History a = History(
+                                                author: widget.alarm!.author,
+                                                mission: widget.alarm!.mission,
+                                                time: widget.alarm!.time,
+                                                timer: timer!);
+                                            addHistory(a);
+                                            Alarm toRemove = widget.alarm!;
+                                            removeAlarm(toRemove);
+                                            AudioService.stopAudio();
+                                            Navigator.of(context).popUntil(
+                                                (route) => route.isFirst);
+                                          } else if (checkPhrase() == false) {
+                                            print("false");
+                                            showToast(
+                                              LocaleKeys.you_answer_wrong_text
+                                                  .tr(),
+                                              textStyle: TextStyle(
+                                                  color: Colors.white),
+                                              backgroundColor:
+                                                  Colors.deepOrangeAccent,
+                                              context: context,
+                                              animation:
+                                                  StyledToastAnimation.scale,
+                                              reverseAnimation:
+                                                  StyledToastAnimation.fade,
+                                              position:
+                                                  StyledToastPosition.center,
+                                              animDuration:
+                                                  Duration(seconds: 1),
+                                              duration: Duration(seconds: 4),
+                                              curve: Curves.elasticOut,
+                                              reverseCurve: Curves.linear,
+                                            );
+                                          }
                                         }
-                                      } else if (a >= b) {
-                                        if (checkPhrase() == true) {
-                                          print("true");
-                                          TimerCountUp.stopTimer();
-                                          int? timer = TimerCountUp.getTimerTime();
-                                          History a = History(author: widget.alarm!.author, mission: widget.alarm!.mission, time: widget.alarm!.time, timer: timer!);
-                                          addHistory(a);
-                                          Alarm toRemove = widget.alarm!;
-                                          removeAlarm(toRemove);
-                                          AudioService.stopAudio();
-                                          Navigator.of(context).popUntil(
-                                              (route) => route.isFirst);
-                                        } else if (checkPhrase() == false) {
-                                          print("false");
-                                          showToast(
-                                            LocaleKeys.you_answer_wrong_text
-                                                .tr(),
-                                            textStyle:
-                                                TextStyle(color: Colors.white),
-                                            backgroundColor:
-                                                Colors.deepOrangeAccent,
-                                            context: context,
-                                            animation:
-                                                StyledToastAnimation.scale,
-                                            reverseAnimation:
-                                                StyledToastAnimation.fade,
-                                            position:
-                                                StyledToastPosition.center,
-                                            animDuration: Duration(seconds: 1),
-                                            duration: Duration(seconds: 4),
-                                            curve: Curves.elasticOut,
-                                            reverseCurve: Curves.linear,
-                                          );
-                                        }
-                                      }
                                       });
                                     },
                                     child: Icon(

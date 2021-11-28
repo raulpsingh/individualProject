@@ -7,7 +7,7 @@ List _shortPhrases = [
   "No pressure no diamonds",
   "Stay foolish to stay sane",
   "When nothing goes right, go left",
-  "Impossible is for the unwilling."
+  "Impossible is for the unwilling"
 ];
 List _normalPhrases = [
   "A room without books is like a body without a soul",
@@ -42,16 +42,18 @@ String getLongPhrase() {
   return _phrase;
 }
 
-String? generatePhrase(Alarm? a){
- String _phrase;
-  if(a!.difficulty==1){
-     _phrase = getShortPhrase();
+String? generatePhrase(Alarm? a) {
+  String _phrase;
+  if (a!.difficulty == 1) {
+    _phrase = getShortPhrase();
     return _phrase;
-  }if(a.difficulty==2){
+  }
+  if (a.difficulty == 2) {
     _phrase = getNormalPhrase();
-    return  _phrase;
-  }if(a.difficulty==3){
+    return _phrase;
+  }
+  if (a.difficulty == 3) {
     _phrase = getLongPhrase();
-    return  _phrase;
+    return _phrase;
   }
 }

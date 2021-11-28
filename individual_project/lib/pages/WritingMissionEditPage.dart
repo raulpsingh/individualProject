@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/functions/widgets.dart';
 import 'package:individual_project/objects/missionObject.dart';
+import 'package:individual_project/pages/missionsEditPage.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
 import 'missionsPage.dart';
 
@@ -13,14 +14,14 @@ List items = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 int index = 0;
 List missions = <Mission>[];
 
-class WritingMissionPage extends StatefulWidget {
-  const WritingMissionPage({Key? key}) : super(key: key);
+class WritingMissionEditPage extends StatefulWidget {
+  const WritingMissionEditPage({Key? key}) : super(key: key);
 
   @override
-  _WritingMissionPageState createState() => _WritingMissionPageState();
+  _WritingMissionEditPageState createState() => _WritingMissionEditPageState();
 }
 
-class _WritingMissionPageState extends State<WritingMissionPage> {
+class _WritingMissionEditPageState extends State<WritingMissionEditPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -73,10 +74,10 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                               children: [
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(top: paddHeight * 0.05),
+                                  EdgeInsets.only(top: paddHeight * 0.05),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
                                         LocaleKeys.length_text.tr(),
@@ -92,10 +93,10 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(top: paddHeight * 0.02),
+                                  EdgeInsets.only(top: paddHeight * 0.02),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                     children: [
                                       Text(
                                         level,
@@ -110,10 +111,10 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                                 ),
                                 Padding(
                                   padding:
-                                      EdgeInsets.only(top: paddHeight * 0.03),
+                                  EdgeInsets.only(top: paddHeight * 0.03),
                                   child: Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
+                                    MainAxisAlignment.spaceAround,
                                     children: [
                                       SizedBox(
                                           width: size.width * 0.95,
@@ -123,9 +124,9 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                                               max: 3,
                                               divisions: 2,
                                               activeColor:
-                                                  Colors.deepOrangeAccent,
+                                              Colors.deepOrangeAccent,
                                               inactiveColor:
-                                                  Colors.orange.shade50,
+                                              Colors.orange.shade50,
                                               onChanged: (_value) {
                                                 setState(() {
                                                   value = _value;
@@ -168,10 +169,10 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                             child: Column(children: [
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: paddHeight * 0.02),
+                                EdgeInsets.only(top: paddHeight * 0.02),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       LocaleKeys.number_of_phrases_text.tr(),
@@ -188,7 +189,7 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                               ),
                               Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 children: [
                                   SizedBox(
                                     width: size.width * 0.8,
@@ -202,12 +203,12 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                                         },
                                         children: items
                                             .map((item) => Center(
-                                                    child: Text(
-                                                  item,
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontFamily: "NexaXBold"),
-                                                )))
+                                            child: Text(
+                                              item,
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontFamily: "NexaXBold"),
+                                            )))
                                             .toList()),
                                   )
                                 ],
@@ -245,7 +246,7 @@ class _WritingMissionPageState extends State<WritingMissionPage> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                        builder: (ctx) => MissionsPage()));
+                                        builder: (ctx) => MissionsEditPage()));
                               },
                               child: Text(
                                 LocaleKeys.done_text.tr(),

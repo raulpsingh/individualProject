@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
-import 'package:individual_project/widgets.dart';
+import 'package:individual_project/functions/widgets.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:flutter_styled_toast/flutter_styled_toast.dart';
 
@@ -179,21 +179,21 @@ class _LoginPageState extends State<LoginPage> {
                           )
                         ],
                       )),
-
                 Expanded(
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
-                      Padding(
-                        padding: EdgeInsets.only(right: paddWidth*0.02),
-                        child: Container(
-                            width: size.width*0.4,
-                            height:  size.height*0.07,
-                            child: DropDown()),
-                      )
-                    ],),
+                        Padding(
+                          padding: EdgeInsets.only(right: paddWidth * 0.02),
+                          child: Container(
+                              width: size.width * 0.4,
+                              height: size.height * 0.07,
+                              child: DropDown()),
+                        )
+                      ],
+                    ),
                   ),
                 )
               ],

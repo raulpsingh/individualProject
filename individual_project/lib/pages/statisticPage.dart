@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/historyObject.dart';
@@ -68,7 +67,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                       LocaleKeys.statistics_text.tr(),
+                        LocaleKeys.statistics_text.tr(),
                         style: TextStyle(fontFamily: "NexaXBold", fontSize: 20),
                       ),
                       PopupMenuButton(
@@ -78,7 +77,8 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           ),
                           itemBuilder: (context) => [
                                 PopupMenuItem(
-                                  child: Text(LocaleKeys.remove_statistics_text.tr()),
+                                  child: Text(
+                                      LocaleKeys.remove_statistics_text.tr()),
                                   value: 1,
                                   onTap: () {
                                     removeAllHistory();
@@ -110,7 +110,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                     children: [
                                       Container(
                                         width: size.width * 0.97,
-                                        height: size.height * 0.18,
+                                        height: size.height * 0.245,
                                         decoration: BoxDecoration(
                                             borderRadius:
                                                 BorderRadius.circular(20),
@@ -123,7 +123,10 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                               child: Row(
                                                 children: [
                                                   Padding(
-                                                    padding: EdgeInsets.only(left: paddWidth*0.03,right: paddWidth*0.03),
+                                                    padding: EdgeInsets.only(
+                                                        left: paddWidth * 0.03,
+                                                        right:
+                                                            paddWidth * 0.03),
                                                     child: Text(
                                                       monthFormat(
                                                               histories[index]
@@ -140,16 +143,16 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                                   ),
                                                   Text(
                                                     dateFormat(
-                                                        histories[index]
-                                                            .time,
-                                                        context.locale
-                                                            .toString())
+                                                            histories[index]
+                                                                .time,
+                                                            context.locale
+                                                                .toString())
                                                         .toString(),
                                                     style: TextStyle(
                                                         fontSize: 20,
                                                         fontFamily: "Nexa",
                                                         fontWeight:
-                                                        FontWeight.bold),
+                                                            FontWeight.bold),
                                                   ),
                                                 ],
                                               ),
@@ -160,9 +163,12 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                               child: Row(
                                                 children: [
                                                   Padding(
-                                                    padding: EdgeInsets.only(left: paddWidth*0.03),
+                                                    padding: EdgeInsets.only(
+                                                        left: paddWidth * 0.03),
                                                     child: Text(
-                                                      LocaleKeys.mission_stat_text.tr(),
+                                                      LocaleKeys
+                                                          .mission_stat_text
+                                                          .tr(),
                                                       style: TextStyle(
                                                           fontSize: 20,
                                                           fontFamily: "Nexa",
@@ -190,9 +196,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                               child: Row(
                                                 children: [
                                                   Padding(
-                                                    padding: EdgeInsets.only(left: paddWidth*0.03),
+                                                    padding: EdgeInsets.only(
+                                                        left: paddWidth * 0.03),
                                                     child: Text(
-                                                      LocaleKeys.time_took_text.tr(),
+                                                      LocaleKeys.time_took_text
+                                                          .tr(),
                                                       style: TextStyle(
                                                           fontSize: 15,
                                                           fontFamily: "Nexa",
@@ -200,27 +208,24 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                                               FontWeight.bold),
                                                     ),
                                                   ),
-                                                  Text(
-                                                    timeSpent(histories[index]
-                                                            .timer)
-                                                        .toString(),
-                                                    style: TextStyle(
-                                                        fontSize: 15,
-                                                        fontFamily: "NexaXBold",
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  )
                                                 ],
                                               ),
                                             ),
                                             Padding(
                                               padding: EdgeInsets.only(
-                                                  top: paddHeight * 0.02),
+                                                  top: paddHeight * 0.02,left: paddWidth * 0.03),
                                               child: Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceAround,
-                                                children: [],
+                                                children: [
+                                                  Text(
+                                                  timeSpent(histories[index]
+                                                      .timer)
+                                                      .toString(),
+                                                  style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontFamily: "NexaXBold",
+                                                      fontWeight:
+                                                      FontWeight.bold),
+                                                )],
                                               ),
                                             )
                                           ],

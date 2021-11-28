@@ -1,27 +1,34 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/functions/functions.dart';
+import 'package:individual_project/functions/widgets.dart';
+import 'package:individual_project/pages/missionsEditPage.dart';
 import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/pages/mainPage.dart';
-import 'package:individual_project/widgets.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:provider/provider.dart';
 
-DateTime time=DateTime.now() ;
-DateTime _time=DateTime.now();
+DateTime time = DateTime.now();
+DateTime _time = DateTime.now();
 late Timestamp vs;
 late String uid;
 late Alarm alarm;
 late String label;
+late int mission;
 void open(Alarm a) {
-  alarm=a;
-  uid=a.uid!;
-  vs =a.time;
-  time=a.time.toDate();
-  label = a.label! ;
+  alarm = a;
+  uid = a.uid!;
+  vs = a.time;
+  time = a.time.toDate();
+  label = a.label!;
+  mission = a.mission;
 }
-DataBaseService db =DataBaseService();
+
+DataBaseService db = DataBaseService();
 
 class AlarmEdit extends StatefulWidget {
   const AlarmEdit({Key? key}) : super(key: key);
@@ -31,18 +38,14 @@ class AlarmEdit extends StatefulWidget {
 }
 
 class _AlarmEditState extends State<AlarmEdit> {
-
   TextEditingController num1controller = TextEditingController(text: label);
-
-
-
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     final double paddHeight = MediaQuery.of(context).size.height;
     final double paddWidth = MediaQuery.of(context).size.width;
-    AppUser? user= Provider.of<AppUser?>(context);
+    AppUser? user = Provider.of<AppUser?>(context);
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -62,9 +65,12 @@ class _AlarmEditState extends State<AlarmEdit> {
             Row(
               children: [
                 Padding(
-                  padding: EdgeInsets.only(top: paddHeight * 0.1, right: 5, left: 5),
+                  padding:
+                      EdgeInsets.only(top: paddHeight * 0.1, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: size.width * 0.97,
                     height: size.height * 0.2,
                     padding: EdgeInsets.only(),
@@ -76,7 +82,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                             initialDateTime: time,
                             onDateTimeChanged: (datetime) {
                               setState(() {
-                                _time = datetime ;
+                                _time = datetime;
                                 print(datetime);
                               });
                             },
@@ -95,22 +101,27 @@ class _AlarmEditState extends State<AlarmEdit> {
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: size.width * 0.97,
                     height: 100,
                     child: Padding(
                       padding: const EdgeInsets.only(left: 10),
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            "Label",
-                            style: TextStyle(
-                                fontFamily: "Nexa",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                          Container(
+                            width: size.width * 0.45,
+                            child: Text(
+                              LocaleKeys.label_text.tr(),
+                              style: TextStyle(
+                                  fontFamily: "Nexa",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 100),
+                            padding: EdgeInsets.only(),
                             child: SizedBox(
                               width: size.width * 0.45,
                               child: TextField(
@@ -124,7 +135,7 @@ class _AlarmEditState extends State<AlarmEdit> {
                                         borderSide: const BorderSide(
                                             color: Colors.deepOrangeAccent),
                                         borderRadius:
-                                        BorderRadius.circular(5))),
+                                            BorderRadius.circular(5))),
                                 keyboardType: TextInputType.text,
                                 controller: num1controller,
                               ),
@@ -141,39 +152,58 @@ class _AlarmEditState extends State<AlarmEdit> {
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
-                  child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
-                    width: size.width * 0.97,
-                    height: 100,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: Row(
-                        children: <Widget>[
-                          Text(
-                            "Mission",
-                            style: TextStyle(
-                                fontFamily: "Nexa",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(left: paddWidth * 0.5),
-                            child: DropDown(),
-                          )
-                        ],
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute<void>(
+                              builder: (context) => MissionsEditPage()));
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white60,
+                          borderRadius: BorderRadius.circular(20)),
+                      width: size.width * 0.97,
+                      height: 100,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Row(
+                          children: <Widget>[
+                            Text(
+                              LocaleKeys.mission_text.tr(),
+                              style: TextStyle(
+                                  fontFamily: "Nexa",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: paddWidth * 0.43),
+                              child: Text(
+                                getMission(mission),
+                                style: TextStyle(
+                                  fontFamily: "NexaXBold",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  foreground: Paint()..shader = linearGradient,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
                 )
               ],
             ),
-
             Row(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: Container(
-                    decoration: BoxDecoration(color: Colors.white60,borderRadius: BorderRadius.circular(20) ),
+                    decoration: BoxDecoration(
+                        color: Colors.white60,
+                        borderRadius: BorderRadius.circular(20)),
                     width: size.width * 0.97,
                     height: 100,
                     child: Padding(
@@ -181,15 +211,23 @@ class _AlarmEditState extends State<AlarmEdit> {
                       child: Row(
                         children: <Widget>[
                           Text(
-                            "Sound",
+                         LocaleKeys.sound_text.tr(),
                             style: TextStyle(
-                                fontFamily: "Nexa",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                              fontFamily: "Nexa",
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
                           ),
                           Padding(
-                            padding:  EdgeInsets.only(left: paddWidth * 0.5),
-                            child: DropDown(),
+                            padding: EdgeInsets.only(left: paddWidth * 0.5),
+                            child: Text(
+                              "Sound",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontFamily: "NexaXBold",
+                                foreground: Paint()..shader = linearGradient,
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -198,7 +236,6 @@ class _AlarmEditState extends State<AlarmEdit> {
                 )
               ],
             ),
-
             Padding(
               padding: EdgeInsets.only(top: paddHeight * 0.05),
               child: Row(
@@ -210,37 +247,29 @@ class _AlarmEditState extends State<AlarmEdit> {
                             MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
-                        "Cancel",
+                        LocaleKeys.cancel_text.tr(),
                         style: TextStyle(
-                            fontFamily: 'Nexa',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrangeAccent),
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          foreground: Paint()..shader = linearGradient,
+                        ),
                       )),
                   TextButton(
                       onPressed: () {
-                        Timestamp stamp = Timestamp.fromDate(_time);
-                        if (vs != stamp){
-                          alarm.time=stamp;
-                          db.editAlarms(alarm, uid);
-
-                        }
-                        if(alarm.label != num1controller.text){
-                          alarm.label=num1controller.text;
-                          db.editAlarms(alarm, uid);
-                        }
-                        Navigator.push(
-                            context, MaterialPageRoute(builder: (ctx) => MainPage()));
-
-
+                        String label = num1controller.text;
+                        editAlarm(alarm, label, _time);
+                        Navigator.push(context,
+                            MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
-                        "Done",
+                        LocaleKeys.done_text.tr(),
                         style: TextStyle(
-                            fontFamily: 'Nexa',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrangeAccent),
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          foreground: Paint()..shader = linearGradient,
+                        ),
                       ))
                 ],
               ),

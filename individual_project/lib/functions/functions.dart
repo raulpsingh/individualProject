@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:easy_localization/src/public_ext.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/objects/historyObject.dart';
@@ -11,8 +11,7 @@ import 'package:individual_project/services/database_service.dart';
 import 'package:individual_project/services/notification_service.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:intl/intl.dart';
-
-import '../objects/alarmObject.dart';
+import 'package:individual_project/objects/alarmObject.dart';
 
 DataBaseService db = DataBaseService();
 
@@ -67,6 +66,9 @@ Future<void> saveAlarm(Alarm a) async {
 }
 
 void addAlarm(DateTime time, AppUser? user, String label) {
+  if (time.isBefore(DateTime.now())) {
+    time = time.add(Duration(days: 1));
+  }
   Timestamp stamp = Timestamp.fromDate(time);
   Alarm a = Alarm(
       mission: 1,
@@ -75,10 +77,30 @@ void addAlarm(DateTime time, AppUser? user, String label) {
       label: label,
       time: stamp,
       status: true);
-  Alarm c = MissionHelper.addMissionToAlarm(a);
+  Alarm c = MissionAddHelper.addMissionToAlarm(a);
   saveAlarm(c);
   NotificationService.showNotification(a);
 }
+
+void editAlarm(Alarm alarm,String label,DateTime _time) {
+
+  if(_time.isBefore(DateTime.now())) {
+    _time = _time.add(Duration(days: 1));
+  }
+  Timestamp stamp = Timestamp.fromDate(_time);
+  if(alarm.time != stamp) {
+    alarm.time = stamp;
+  }
+  if(alarm.label != label) {
+    alarm.label = label;
+  }
+  NotificationService.removeNotification(alarm);
+  Alarm c = MissionAddHelper.addMissionToAlarm(alarm);
+  NotificationService.showNotification(c);
+  saveAlarm(c);
+
+}
+
 
 Stream<List<Alarm>> getAlarms(AppUser user) {
   return db.getAlarms(user.id);
@@ -88,9 +110,6 @@ void removeAlarm(Alarm alarm) {
   db.removeAlarm(alarm);
 }
 
-void editAlarm(Alarm alarm) {
-  db.addAndEditAlarms(alarm);
-}
 
 String correction(String a) {
   RegExp exp = RegExp(r"[^\w\s+-?/:*^=]+");
@@ -186,13 +205,36 @@ String? missionDefiner(int mission) {
 Future<void> removeAllHistory() async {
   await db.removeHistoryAll();
 }
-Duration test(List<DateTime> time) {
+
+Duration getDuration(List<DateTime> time) {
   final now = DateTime.now();
   final closetsDateTimeToNow = time.reduce(
       (a, b) => a.difference(now).abs() < b.difference(now).abs() ? a : b);
 
-    return (closetsDateTimeToNow.difference(now));
+  return (closetsDateTimeToNow.difference(now));
 }
 
-
 format(Duration d) => d.toString().split('.').first.padLeft(8, "0");
+
+
+String getMission(int a) {
+String b = LocaleKeys.off_text.tr();
+if (a == null) {
+return b;
+}
+if (a != null) {
+if (a == 1) {
+b = LocaleKeys.off_text.tr();
+return b;
+}
+if (a == 2) {
+b = LocaleKeys.math_text.tr();
+return b;
+}
+if (a == 3) {
+b = LocaleKeys.writing_text.tr();
+return b;
+}
+}
+return b;
+}

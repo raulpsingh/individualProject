@@ -1,24 +1,24 @@
 import 'dart:ui';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/missionObject.dart';
+import 'package:individual_project/pages/AlarmEditPage.dart';
 import 'package:individual_project/pages/mathMissionPage.dart';
 import 'package:individual_project/pages/writingMissionPage.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
-import 'alarmAddPage.dart';
+
 
 int missionInt = 1;
 
-class MissionsPage extends StatefulWidget {
-  const MissionsPage({Key? key}) : super(key: key);
+class MissionsEditPage extends StatefulWidget {
+  const MissionsEditPage({Key? key}) : super(key: key);
 
   @override
-  _MissionsPageState createState() => _MissionsPageState();
+  _MissionsEditPageState createState() => _MissionsEditPageState();
 }
 
-class _MissionsPageState extends State<MissionsPage> {
+class _MissionsEditPageState extends State<MissionsEditPage> {
   @override
   Widget build(BuildContext context) {
     Border _bordermath = Border();
@@ -78,7 +78,7 @@ class _MissionsPageState extends State<MissionsPage> {
               ),
               Padding(
                 padding:
-                    EdgeInsets.only(top: paddHeight * 0.05, left: 5, right: 5),
+                EdgeInsets.only(top: paddHeight * 0.05, left: 5, right: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -186,7 +186,7 @@ class _MissionsPageState extends State<MissionsPage> {
               ),
               Padding(
                 padding:
-                    EdgeInsets.only(top: paddHeight * 0.01, left: 5, right: 5),
+                EdgeInsets.only(top: paddHeight * 0.01, left: 5, right: 5),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
@@ -255,7 +255,7 @@ class _MissionsPageState extends State<MissionsPage> {
                     child: TextButton(
                       onPressed: () {
                         Navigator.push(context,
-                            MaterialPageRoute(builder: (ctx) => AlarmAdd()));
+                            MaterialPageRoute(builder: (ctx) => AlarmEdit()));
                       },
                       child: Container(
                         height: size.height * 0.08,

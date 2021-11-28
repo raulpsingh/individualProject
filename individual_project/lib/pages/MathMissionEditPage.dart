@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:individual_project/functions/widgets.dart';
 import 'package:individual_project/objects/missionObject.dart';
-import 'package:individual_project/pages/missionsPage.dart';
+import 'package:individual_project/pages/missionsEditPage.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
 
 double value = 1;
@@ -13,14 +13,14 @@ List items = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'];
 int index = 0;
 List missions = <Mission>[];
 
-class MathMissionPage extends StatefulWidget {
-  const MathMissionPage({Key? key}) : super(key: key);
+class MathMissionEditPage extends StatefulWidget {
+  const MathMissionEditPage({Key? key}) : super(key: key);
 
   @override
-  _MathMissionPageState createState() => _MathMissionPageState();
+  _MathMissionEditPageState createState() => _MathMissionEditPageState();
 }
 
-class _MathMissionPageState extends State<MathMissionPage> {
+class _MathMissionEditPageState extends State<MathMissionEditPage> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -74,10 +74,10 @@ class _MathMissionPageState extends State<MathMissionPage> {
                             children: [
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: paddHeight * 0.05),
+                                EdgeInsets.only(top: paddHeight * 0.05),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       LocaleKeys.difficulty_text.tr(),
@@ -92,10 +92,10 @@ class _MathMissionPageState extends State<MathMissionPage> {
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: paddHeight * 0.02),
+                                EdgeInsets.only(top: paddHeight * 0.02),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     Text(
                                       level,
@@ -110,10 +110,10 @@ class _MathMissionPageState extends State<MathMissionPage> {
                               ),
                               Padding(
                                 padding:
-                                    EdgeInsets.only(top: paddHeight * 0.03),
+                                EdgeInsets.only(top: paddHeight * 0.03),
                                 child: Row(
                                   mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
+                                  MainAxisAlignment.spaceAround,
                                   children: [
                                     SizedBox(
                                       width: size.width * 0.95,
@@ -169,14 +169,14 @@ class _MathMissionPageState extends State<MathMissionPage> {
                               padding: EdgeInsets.only(top: paddHeight * 0.02),
                               child: Row(
                                 mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                                MainAxisAlignment.spaceAround,
                                 children: [
                                   Text(
                                     LocaleKeys.number_of_problems_text.tr(),
                                     style: TextStyle(
-                                        fontSize: 25,
-                                        fontFamily: "NexaXBold",
-                                        fontWeight: FontWeight.bold,
+                                      fontSize: 25,
+                                      fontFamily: "NexaXBold",
+                                      fontWeight: FontWeight.bold,
                                       foreground: Paint()..shader = linearGradient,
                                     ),
                                   )
@@ -198,12 +198,12 @@ class _MathMissionPageState extends State<MathMissionPage> {
                                       },
                                       children: items
                                           .map((item) => Center(
-                                                  child: Text(
-                                                item,
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    fontFamily: "NexaXBold"),
-                                              )))
+                                          child: Text(
+                                            item,
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontFamily: "NexaXBold"),
+                                          )))
                                           .toList()),
                                 )
                               ],
@@ -241,7 +241,7 @@ class _MathMissionPageState extends State<MathMissionPage> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (ctx) => MissionsPage()));
+                                      builder: (ctx) => MissionsEditPage()));
                             },
                             child: Text(
                               LocaleKeys.done_text.tr(),

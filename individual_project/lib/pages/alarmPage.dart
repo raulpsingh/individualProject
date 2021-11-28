@@ -9,10 +9,10 @@ import 'package:individual_project/objects/user.dart';
 import 'package:individual_project/services/notification_service.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:provider/provider.dart';
-import '../widgets.dart';
+import '../functions/widgets.dart';
 import 'alarmAddPage.dart';
 import 'package:individual_project/pages/AlarmEditPage.dart';
-import 'package:individual_project/widgets.dart';
+import 'package:individual_project/functions/widgets.dart';
 import "package:easy_localization/easy_localization.dart";
 
 List alarms = <Alarm>[];
@@ -36,7 +36,7 @@ class _AlarmsListState extends State<AlarmsList> {
       alarmStreamSubscription.cancel();
     }
 
-    if(timer!.isActive == false){
+    if (timer!.isActive == false) {
       print("Timer canceled");
       timer!.cancel();
     }
@@ -53,7 +53,6 @@ class _AlarmsListState extends State<AlarmsList> {
   void findNearest() {
     List times = <Timestamp>[];
     List<DateTime> time = <DateTime>[];
-    final now = DateTime.now();
     if (alarms != null) {
       for (int i = 0; i < alarms.length; i++) {
         times.add(alarms[i].time);
@@ -63,28 +62,33 @@ class _AlarmsListState extends State<AlarmsList> {
       }
     }
     if (time.isNotEmpty) {
-      b = format(test(time));
+      b = format(getDuration(time));
     }
   }
 
   void timeLeft() {
     if (b != null) {
-      if(mounted)setState(() {
-      timeTo = '$alarmIn  $b';
-      });
-    }if(b == null){
-      if(mounted)setState(() {
-     timeTo =LocaleKeys.no_scheduled_alarms.tr();
-    });
+      if (mounted)
+        setState(() {
+          timeTo = '$alarmIn  $b';
+        });
+    }
+    if (b == null) {
+      if (mounted)
+        setState(() {
+          timeTo = LocaleKeys.no_scheduled_alarms.tr();
+        });
     }
   }
+
   @override
   void initState() {
     startTimer();
     super.initState();
   }
-  void startTimer(){
-    timer = Timer.periodic(Duration(seconds: 1),(_){
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
       findNearest();
       timeLeft();
     });
@@ -252,7 +256,7 @@ class _AlarmsListState extends State<AlarmsList> {
                                                                 alarms[index]
                                                                         .status =
                                                                     value;
-                                                                editAlarm(
+                                                                saveAlarm(
                                                                     alarms[
                                                                         index]);
                                                               },

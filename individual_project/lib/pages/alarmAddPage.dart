@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/functions/widgets.dart';
 import 'package:individual_project/objects/missionObject.dart';
 import 'package:individual_project/pages/missionsPage.dart';
 import 'package:individual_project/functions/functions.dart';
@@ -11,6 +12,7 @@ import 'package:provider/provider.dart';
 
 DateTime time = DateTime.now();
 String mission = LocaleKeys.off_text.tr();
+
 class AlarmAdd extends StatefulWidget {
   const AlarmAdd({Key? key}) : super(key: key);
 
@@ -22,12 +24,12 @@ class _AlarmAddState extends State<AlarmAdd> {
   TextEditingController num1controller = TextEditingController();
   DateTime _time = DateTime.now();
 
-void checkMission(){
+  void checkMission() {
+    setState(() {
+      mission = MissionAddHelper.getMission();
+    });
+  }
 
- setState(() {
-   mission= MissionHelper.getMission();
- });
-}
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -98,15 +100,18 @@ void checkMission(){
                       padding: const EdgeInsets.only(left: 10),
                       child: Row(
                         children: <Widget>[
-                          Text(
-                            LocaleKeys.label_text.tr(),
-                            style: TextStyle(
-                                fontFamily: "Nexa",
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20),
+                          Container(
+                            width: size.width * 0.45,
+                            child: Text(
+                              LocaleKeys.label_text.tr(),
+                              style: TextStyle(
+                                  fontFamily: "Nexa",
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),
+                            ),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: paddWidth*0.15),
+                            padding: EdgeInsets.only(),
                             child: SizedBox(
                               width: size.width * 0.45,
                               child: TextField(
@@ -138,10 +143,13 @@ void checkMission(){
                 Padding(
                   padding: const EdgeInsets.only(top: 20, right: 5, left: 5),
                   child: GestureDetector(
-                    onTap: (){Navigator.push(
-                      context,
-                      MaterialPageRoute<void>(builder: (context) => MissionsPage()),
-                    );},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute<void>(
+                            builder: (context) => MissionsPage()),
+                      );
+                    },
                     child: Container(
                       decoration: BoxDecoration(
                           color: Colors.white60,
@@ -161,7 +169,15 @@ void checkMission(){
                             ),
                             Padding(
                               padding: EdgeInsets.only(left: paddWidth * 0.43),
-                              child:Text(mission,style: TextStyle(fontFamily: "NexaXBold",fontSize: 20,fontWeight: FontWeight.bold,color: Colors.deepOrangeAccent),),
+                              child: Text(
+                                mission,
+                                style: TextStyle(
+                                  fontFamily: "NexaXBold",
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  foreground: Paint()..shader = linearGradient,
+                                ),
+                              ),
                             )
                           ],
                         ),
@@ -193,8 +209,15 @@ void checkMission(){
                                 fontSize: 20),
                           ),
                           Padding(
-                            padding: EdgeInsets.only(left: paddWidth * 0.5),
-                            child: Text("Sound"),
+                            padding: EdgeInsets.only(left: paddWidth * 0.44),
+                            child: Text(
+                              "Sound",
+                              style: TextStyle(
+                                fontFamily: "NexaXBold",
+                                fontSize: 20,
+                                foreground: Paint()..shader = linearGradient,
+                              ),
+                            ),
                           )
                         ],
                       ),
@@ -216,24 +239,26 @@ void checkMission(){
                       child: Text(
                         LocaleKeys.cancel_text.tr(),
                         style: TextStyle(
-                            fontFamily: 'Nexa',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrangeAccent),
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          foreground: Paint()..shader = linearGradient,
+                        ),
                       )),
                   TextButton(
                       onPressed: () {
-                        addAlarm(time, user,num1controller.text);
+                        addAlarm(time, user, num1controller.text);
                         Navigator.push(context,
                             MaterialPageRoute(builder: (ctx) => MainPage()));
                       },
                       child: Text(
                         LocaleKeys.done_text.tr(),
                         style: TextStyle(
-                            fontFamily: 'Nexa',
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20,
-                            color: Colors.deepOrangeAccent),
+                          fontFamily: 'Nexa',
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20,
+                          foreground: Paint()..shader = linearGradient,
+                        ),
                       ))
                 ],
               ),

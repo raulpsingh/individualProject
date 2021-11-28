@@ -46,11 +46,14 @@ class _MainPageState extends State<MainPage> {
           currentIndex: _currentIndex,
           onTap: (index) => setState(() => _currentIndex = index),
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.alarm), label: LocaleKeys.alarms_text.tr() ),
             BottomNavigationBarItem(
-                icon: Icon(Icons.analytics), label: LocaleKeys.statistics_text.tr()),
+                icon: Icon(Icons.alarm), label: LocaleKeys.alarms_text.tr()),
             BottomNavigationBarItem(
-                icon: Icon(Icons.settings), label: LocaleKeys.setting_text.tr()),
+                icon: Icon(Icons.analytics),
+                label: LocaleKeys.statistics_text.tr()),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.settings),
+                label: LocaleKeys.setting_text.tr()),
           ],
         ),
       ),
