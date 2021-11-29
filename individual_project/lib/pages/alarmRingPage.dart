@@ -3,10 +3,11 @@ import 'package:individual_project/functions/audio.dart';
 import 'package:individual_project/functions/functions.dart';
 import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/pages/AlarmRingMath.dart';
-import 'package:individual_project/pages/alarmPage.dart';
 import 'package:individual_project/pages/alarmRingWriting.dart';
 import 'package:individual_project/functions/timer.dart';
 import 'package:individual_project/objects/historyObject.dart';
+
+import 'alarmPage.dart';
 
 class RingPage extends StatelessWidget {
   final String? payload;
@@ -74,10 +75,11 @@ class RingPage extends StatelessWidget {
                       addHistory(a);
                       AudioService.stopAudio();
                       Alarm toRemove = alarm!;
+                      alarms.remove(toRemove);
                       removeAlarm(toRemove);
                       Navigator.pop(context);
                     }
-                    if (decide(findAlarm()) == 2) {
+                    else if (decide(findAlarm()) == 2) {
                       Navigator.push(
                           context,
                           MaterialPageRoute<void>(
@@ -85,7 +87,7 @@ class RingPage extends StatelessWidget {
                                     alarm: alarm,
                                   )));
                     }
-                    if (decide(findAlarm()) == 3) {
+                    else if (decide(findAlarm()) == 3) {
                       Navigator.push(
                           context,
                           MaterialPageRoute<void>(

@@ -9,7 +9,7 @@ import 'package:individual_project/objects/alarmObject.dart';
 import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:individual_project/functions/timer.dart';
 import 'package:individual_project/objects/historyObject.dart';
-
+import 'alarmPage.dart';
 class RingMath extends StatefulWidget {
   final Alarm? alarm;
   const RingMath({Key? key, required this.alarm}) : super(key: key);
@@ -344,6 +344,7 @@ class _RingMathState extends State<RingMath> {
                                 addHistory(a);
                                 AudioService.stopAudio();
                                 Alarm toRemove = widget.alarm!;
+                                alarms.remove(toRemove);
                                 removeAlarm(toRemove);
                                 Navigator.of(context)
                                     .popUntil((route) => route.isFirst);

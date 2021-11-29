@@ -1,5 +1,11 @@
+import 'dart:async';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:individual_project/objects/alarmObject.dart';
+import 'package:individual_project/pages/alarmPage.dart';
+import 'package:individual_project/translations/locale_keys.g.dart';
 import 'functions.dart';
 
 final Shader linearGradient = LinearGradient(
@@ -138,6 +144,89 @@ class _DropDownState extends State<DropDown> {
           child: Text(value),
         );
       }).toList(),
+    );
+  }
+}
+
+class TimeLeftWidget extends StatefulWidget {
+  final List alarms;
+  const TimeLeftWidget({Key? key, required this.alarms}) : super(key: key);
+
+  @override
+  _TimeLeftWidgetState createState() => _TimeLeftWidgetState();
+}
+
+class _TimeLeftWidgetState extends State<TimeLeftWidget> {
+  String timeTo = LocaleKeys.no_scheduled_alarms.tr();
+  String alarmIn = LocaleKeys.in_text.tr();
+  String? b;
+  Timer? timer;
+  Duration? c;
+  void dispose() {
+    if (timer!.isActive == false) {
+      print("Timer canceled");
+      timer!.cancel();
+    }
+    super.dispose();
+  }
+
+  void findNearest() {
+    List times = <Timestamp>[];
+    List<DateTime> time = <DateTime>[];
+    if (alarms != null) {
+      for (int i = 0; i < alarms.length; i++) {
+        times.add(alarms[i].time);
+      }
+      for (int b = 0; b < times.length; b++) {
+        time.add(times[b].toDate());
+      }
+    }
+    if (time.isNotEmpty) {
+      c=getDuration(time);
+      if(c!.isNegative){
+       b= "Now";
+      }else {
+        b = format(getDuration(time));
+      }
+    }
+    if (time.isEmpty) {
+      b = LocaleKeys.no_scheduled_alarms.tr();
+    }
+  }
+
+  @override
+  void initState() {
+    startTimer();
+    super.initState();
+  }
+
+  void timeLeft() {
+    if (b == LocaleKeys.no_scheduled_alarms.tr()) {
+      if (mounted)
+        setState(() {
+          timeTo = LocaleKeys.no_scheduled_alarms.tr();
+        });
+    } else if (b != null) {
+      if (mounted)
+        setState(() {
+          timeTo = '$alarmIn  $b';
+        });
+    }
+  }
+
+  void startTimer() {
+    timer = Timer.periodic(Duration(seconds: 1), (_) {
+      findNearest();
+      timeLeft();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      timeTo,
+      style: TextStyle(
+          fontFamily: 'Nexa', fontWeight: FontWeight.bold, fontSize: 15),
     );
   }
 }

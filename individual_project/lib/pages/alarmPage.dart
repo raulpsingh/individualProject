@@ -27,18 +27,12 @@ class _AlarmsListState extends State<AlarmsList> {
   String timeTo = LocaleKeys.no_scheduled_alarms.tr();
   String alarmIn = LocaleKeys.in_text.tr();
   String? b;
-  Timer? timer;
 
   @override
   void dispose() {
     if (alarmStreamSubscription != null) {
       print('unsubscribing');
       alarmStreamSubscription.cancel();
-    }
-
-    if (timer!.isActive == false) {
-      print("Timer canceled");
-      timer!.cancel();
     }
     super.dispose();
   }
@@ -50,49 +44,6 @@ class _AlarmsListState extends State<AlarmsList> {
     });
   }
 
-  void findNearest() {
-    List times = <Timestamp>[];
-    List<DateTime> time = <DateTime>[];
-    if (alarms != null) {
-      for (int i = 0; i < alarms.length; i++) {
-        times.add(alarms[i].time);
-      }
-      for (int b = 0; b < times.length; b++) {
-        time.add(times[b].toDate());
-      }
-    }
-    if (time.isNotEmpty) {
-      b = format(getDuration(time));
-    }
-  }
-
-  void timeLeft() {
-    if (b != null) {
-      if (mounted)
-        setState(() {
-          timeTo = '$alarmIn  $b';
-        });
-    }
-    if (b == null) {
-      if (mounted)
-        setState(() {
-          timeTo = LocaleKeys.no_scheduled_alarms.tr();
-        });
-    }
-  }
-
-  @override
-  void initState() {
-    startTimer();
-    super.initState();
-  }
-
-  void startTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (_) {
-      findNearest();
-      timeLeft();
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -138,13 +89,7 @@ class _AlarmsListState extends State<AlarmsList> {
                       Container(
                           padding:
                               EdgeInsets.only(top: 1, left: 10, bottom: 10),
-                          child: Text(
-                            timeTo,
-                            style: TextStyle(
-                                fontFamily: 'NexaXBold',
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          )),
+                          child: TimeLeftWidget(alarms: alarms,)),
                     ],
                   ),
                   Expanded(
@@ -163,7 +108,6 @@ class _AlarmsListState extends State<AlarmsList> {
                                 return Dismissible(
                                     key: UniqueKey(),
                                     onDismissed: (direction) {
-                                      timer!.cancel();
                                       NotificationService.removeNotification(
                                           alarms[index]);
                                       removeAlarm(alarms[index]);

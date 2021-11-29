@@ -10,6 +10,8 @@ import 'package:individual_project/translations/locale_keys.g.dart';
 import 'package:individual_project/functions/timer.dart';
 import 'package:individual_project/objects/historyObject.dart';
 
+import 'alarmPage.dart';
+
 class RingWriting extends StatefulWidget {
   final Alarm? alarm;
   const RingWriting({Key? key, required this.alarm}) : super(key: key);
@@ -225,6 +227,7 @@ class _RingWritingState extends State<RingWriting> {
                                                 timer: timer!);
                                             addHistory(a);
                                             Alarm toRemove = widget.alarm!;
+                                            alarms.remove(toRemove);
                                             removeAlarm(toRemove);
                                             AudioService.stopAudio();
                                             Navigator.of(context).popUntil(
