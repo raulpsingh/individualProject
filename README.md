@@ -14,6 +14,7 @@ TechStak:
 2. DataBases - FireBase FireStore and FireBase Auth.
 
 Functionality:
+
 For using the app you will need to create your account in it, account is used to synchronize alarms and statistics 
 on all devices where app is used. After signing in you can add your first alarm. While adding new alarm you can choose
 the mission you want to appear when you are stopping alarm. For now, there are two missions: Math mission(Solving math problems) 
@@ -23,6 +24,7 @@ some statistics will be available in statistics tab.
 In settings you can change language of the app.
 
 Instructions for build:
+
 For building the app you will need Android emulator and flutter SDK.
 Flutter sdk instructions: https://docs.flutter.dev/get-started/install
 To launch android emulator in Android studio you need to open tools tab 
