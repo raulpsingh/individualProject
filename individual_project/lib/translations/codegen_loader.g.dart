@@ -61,7 +61,8 @@ class CodegenLoader extends AssetLoader{
   "seconds_text": "seconds",
   "and_text": "and",
   "mission_stat_text": "Mission: ",
-  "in_text": "In"
+  "in_text": "In",
+  "your_anser_is_correct_text": "Your answer is correct."
 };
 static const Map<String,dynamic> ru = {
   "login_text": "Войти",
@@ -110,7 +111,8 @@ static const Map<String,dynamic> ru = {
   "seconds_text": "секунд",
   "and_text": "и",
   "mission_stat_text": "Задание: ",
-  "in_text": "Через"
+  "in_text": "Через",
+  "your_anser_is_correct_text": "Ваше ответ верен."
 };
 static const Map<String, Map<String,dynamic>> mapLocales = {"en": en, "ru": ru};
 }

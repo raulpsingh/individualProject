@@ -29,7 +29,8 @@ class _RingWritingState extends State<RingWriting> {
     final double paddWidth = MediaQuery.of(context).size.width;
 
     bool? checkPhrase() {
-      if (_phraseController.text == phrase) {
+      if (_phraseController.text.replaceAll(" ", "") ==
+          phrase!.replaceAll(" ", "")) {
         return true;
       } else
         return false;
@@ -144,6 +145,28 @@ class _RingWritingState extends State<RingWriting> {
                                             getNewPhrase();
                                             a++;
                                             _phraseController.clear();
+                                            showToast(
+                                              LocaleKeys
+                                                  .your_anser_is_correct_text
+                                                  .tr()
+                                                  .tr(),
+                                              textStyle: TextStyle(
+                                                  color: Colors.white),
+                                              backgroundColor:
+                                              Colors.green.withOpacity(0.7),
+                                              context: context,
+                                              animation:
+                                                  StyledToastAnimation.scale,
+                                              reverseAnimation:
+                                                  StyledToastAnimation.fade,
+                                              position:
+                                                  StyledToastPosition.center,
+                                              animDuration:
+                                                  Duration(seconds: 1),
+                                              duration: Duration(seconds: 4),
+                                              curve: Curves.elasticOut,
+                                              reverseCurve: Curves.linear,
+                                            );
                                           } else if (checkPhrase() == false) {
                                             showToast(
                                               LocaleKeys.you_answer_wrong_text
@@ -169,6 +192,28 @@ class _RingWritingState extends State<RingWriting> {
                                           }
                                         } else if (a >= b) {
                                           if (checkPhrase() == true) {
+                                            showToast(
+                                              LocaleKeys
+                                                  .your_anser_is_correct_text
+                                                  .tr()
+                                                  .tr(),
+                                              textStyle: TextStyle(
+                                                  color: Colors.white),
+                                              backgroundColor:
+                                              Colors.green.withOpacity(0.7),
+                                              context: context,
+                                              animation:
+                                                  StyledToastAnimation.scale,
+                                              reverseAnimation:
+                                                  StyledToastAnimation.fade,
+                                              position:
+                                                  StyledToastPosition.center,
+                                              animDuration:
+                                                  Duration(seconds: 1),
+                                              duration: Duration(seconds: 4),
+                                              curve: Curves.elasticOut,
+                                              reverseCurve: Curves.linear,
+                                            );
                                             print("true");
                                             TimerCountUp.stopTimer();
                                             int? timer =

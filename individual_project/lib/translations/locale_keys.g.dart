@@ -48,5 +48,6 @@ abstract class  LocaleKeys {
   static const and_text = 'and_text';
   static const mission_stat_text = 'mission_stat_text';
   static const in_text = 'in_text';
+  static const your_anser_is_correct_text = 'your_anser_is_correct_text';
 
 }

@@ -279,6 +279,26 @@ class _RingMathState extends State<RingMath> {
                                   getNewMathProblem();
                                   a++;
                                   _result="";
+                                  showToast(
+                                    LocaleKeys.your_anser_is_correct_text.tr()
+                                        .tr(),
+                                    textStyle: TextStyle(
+                                        color: Colors.white),
+                                    backgroundColor:
+                                    Colors.green.withOpacity(0.7),
+                                    context: context,
+                                    animation:
+                                    StyledToastAnimation.scale,
+                                    reverseAnimation:
+                                    StyledToastAnimation.fade,
+                                    position:
+                                    StyledToastPosition.center,
+                                    animDuration:
+                                    Duration(seconds: 1),
+                                    duration: Duration(seconds: 4),
+                                    curve: Curves.elasticOut,
+                                    reverseCurve: Curves.linear,
+                                  );
                                 }else if (checkResult(_example, _result) == false) {
                                   showToast(
                                     LocaleKeys.you_answer_wrong_text.tr(),
@@ -297,6 +317,26 @@ class _RingMathState extends State<RingMath> {
                                 }
                             }else if(a>=b) {
                               if (checkResult(_example, _result) == true) {
+                                showToast(
+                                  LocaleKeys.your_anser_is_correct_text.tr()
+                                      .tr(),
+                                  textStyle: TextStyle(
+                                      color: Colors.white),
+                                  backgroundColor:
+                                  Colors.green.withOpacity(0.7),
+                                  context: context,
+                                  animation:
+                                  StyledToastAnimation.scale,
+                                  reverseAnimation:
+                                  StyledToastAnimation.fade,
+                                  position:
+                                  StyledToastPosition.center,
+                                  animDuration:
+                                  Duration(seconds: 1),
+                                  duration: Duration(seconds: 4),
+                                  curve: Curves.elasticOut,
+                                  reverseCurve: Curves.linear,
+                                );
                                 print("true");
                                 TimerCountUp.stopTimer();
                                 int? timer = TimerCountUp.getTimerTime();
